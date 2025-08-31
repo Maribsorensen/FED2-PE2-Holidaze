@@ -1,6 +1,6 @@
 export function Header() {
   return (
-    <header>
+    <header className="bg-primary text-white">
       <nav>
         <div>Logo</div>
         <ul>

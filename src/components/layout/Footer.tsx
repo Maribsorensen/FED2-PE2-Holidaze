@@ -1,6 +1,6 @@
 export function Footer() {
   return (
-    <footer>
+    <footer className="bg-primary text-white">
       <div>
         <div>&copy; Holidaze {new Date().getFullYear()}</div>
         <div>
