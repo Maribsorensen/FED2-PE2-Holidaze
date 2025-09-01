@@ -1,3 +1,5 @@
+import { NavLink } from 'react-router-dom';
+
 export function Header() {
   return (
     <header className="bg-primary text-white">
@@ -10,8 +12,12 @@ export function Header() {
         <div>
           Profile
           <ul>
-            <li>Login</li>
-            <li>Register</li>
+            <li>
+              <NavLink to="/login">Login</NavLink>
+            </li>
+            <li>
+              <NavLink to="/register">Register</NavLink>
+            </li>
           </ul>
         </div>
       </nav>
