@@ -26,11 +26,11 @@ export function VenueCard({ venue }: VenueCardProps) {
         <span className="absolute top-2 left-2 bg-cta text-white text-xs font-semibold px-2 py-1 rounded-sm shadow">
           {venue.rating.toFixed(1)}
         </span>
-        <div className="absolute bottom-0 w-full bg-black/50 text-white p-3">
+        <div className="absolute bottom-0 w-full bg-black/50 text-white py-2 px-3 h-1/3">
           <h2 className="text-lg text-transform: uppercase font-headings">
             {venue.name}
           </h2>
-          <p className="flex items-center gap-1 text-sm text-transform: uppercase font-headings">
+          <p className="flex items-center gap-1 text-xs text-transform: uppercase font-headings absolute bottom-2">
             <FaMapMarkerAlt className="text-cta" />
             {venue.location.city}, {venue.location.country}
           </p>
