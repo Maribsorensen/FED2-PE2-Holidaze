@@ -1,8 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Zen+Kurenaido&display=swap');
 @import 'tailwindcss';
 
 @theme {
-  --font-headings: sans-serif;
-  --font-body: sans-serif;
+  --font-headings: 'Zen Kurenaido', sans-serif;
+  --font-body: 'Lato', sans-serif;
 
   --color-primary: #3e8a7e;
   --color-cta: #b83547;
