@@ -44,8 +44,12 @@ export function VenueListPage() {
 
   return (
     <div>
-      <h1>Venues</h1>
-      <SearchBar value={search} onChange={setSearch} />
+      <h1 className="font-headings text-transform: uppercase text-xl text-center m-4">
+        Venues
+      </h1>
+      <div className="text-center m-4">
+        <SearchBar value={search} onChange={setSearch} />
+      </div>
       <ul className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 ">
         {searchedVenues.map((venue) => (
           <VenueCard key={venue.id} venue={venue} />

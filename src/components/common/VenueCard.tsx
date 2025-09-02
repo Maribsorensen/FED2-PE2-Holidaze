@@ -17,7 +17,7 @@ export function VenueCard({ venue }: VenueCardProps) {
 
   return (
     <li className="relative rounded-md overflow-hidden shadow-lg">
-      <Link to={`/venue/${venue.id}`}>
+      <Link to={`/venues/${venue.id}`}>
         <img
           src={image.url}
           alt={image.alt || venue.name}
@@ -27,7 +27,7 @@ export function VenueCard({ venue }: VenueCardProps) {
           {venue.rating.toFixed(1)}
         </span>
         <div className="absolute bottom-0 w-full bg-black/50 text-white py-2 px-3 h-1/3">
-          <h2 className="text-lg text-transform: uppercase font-headings">
+          <h2 className="text-md text-transform: uppercase font-headings">
             {venue.name}
           </h2>
           <p className="flex items-center gap-1 text-xs text-transform: uppercase font-headings absolute bottom-2">
