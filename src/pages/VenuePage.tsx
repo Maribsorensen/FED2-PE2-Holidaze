@@ -22,7 +22,7 @@ export function VenuePage() {
   }, [id]);
 
   if (!venue) {
-    return <p>Loading venue details...</p>;
+    return <p>Cannot find venue...</p>;
   }
 
   return (
@@ -30,6 +30,44 @@ export function VenuePage() {
       <h1 className="font-headings text-transform: uppercase text-xl text-center m-4">
         {venue.name}
       </h1>
+      <div></div>
+      <div className="grid grid-cols-1 md:grid-cols-[4fr_2fr] gap-5">
+        <div className="flex flex-col">
+          <h2 className="font-headings text-transform: uppercase">
+            Description
+          </h2>
+          <p className="font-body">{venue.description}</p>
+        </div>
+        <div>
+          <h2 className="font-headings uppercase">Specifications</h2>
+          <ul className="font-body space-y-2">
+            <li className="flex justify-between border-b border-gray-300 pb-1">
+              <span>Guests:</span>
+              <span>{venue.maxGuests}</span>
+            </li>
+            <li className="flex justify-between border-b border-gray-300 pb-1">
+              <span>Price per night:</span>
+              <span>{venue.price} $</span>
+            </li>
+            <li className="flex justify-between border-b border-gray-300 pb-1">
+              <span>Pets:</span>
+              <span>{venue.meta.pets ? 'Yes' : 'No'}</span>
+            </li>
+            <li className="flex justify-between border-b border-gray-300 pb-1">
+              <span>Wifi:</span>
+              <span>{venue.meta.wifi ? 'Yes' : 'No'}</span>
+            </li>
+            <li className="flex justify-between border-b border-gray-300 pb-1">
+              <span>Breakfast:</span>
+              <span>{venue.meta.breakfast ? 'Yes' : 'No'}</span>
+            </li>
+            <li className="flex justify-between pb-1">
+              <span>Parking:</span>
+              <span>{venue.meta.parking ? 'Yes' : 'No'}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
