@@ -1,3 +1,5 @@
+import { Button } from "../components/common/Button";
+
 export function LoginPage() {
   return (
     <div>
@@ -19,12 +21,7 @@ export function LoginPage() {
           Password
         </label>
         <input id="password" type="password" name="password" required />
-        <button
-          type="submit"
-          className="font-headings text-transform: uppercase bg-cta text-white rounded-sm px-3 py-1"
-        >
-          Login
-        </button>
+        <Button type="submit">Login</Button>
         <p className="font-headings text-transform: uppercase">
           Don't have an account? Register{' '}
           <a href="/register" className="text-cta">

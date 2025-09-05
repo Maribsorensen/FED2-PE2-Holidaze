@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import type { TVenue } from '../types/venue';
+import { VenueGallery } from '../components/common/VenueGallery';
 
 export function VenuePage() {
   const { id } = useParams<{ id: string }>();
@@ -30,7 +31,7 @@ export function VenuePage() {
       <h1 className="font-headings text-transform: uppercase text-xl text-center m-4">
         {venue.name}
       </h1>
-      <div></div>
+      <VenueGallery venue={venue} />
       <div className="grid grid-cols-1 md:grid-cols-[4fr_2fr] gap-5">
         <div className="flex flex-col">
           <h2 className="font-headings text-transform: uppercase">
