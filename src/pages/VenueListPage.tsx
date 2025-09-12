@@ -1,37 +1,17 @@
-import { useEffect, useState } from 'react';
 import { VenueCard } from '../components/common/VenueCard';
-import type { TVenue } from '../types/venue';
 import { SearchBar } from '../components/common/SearchBar';
+import { useState } from 'react';
+import { useVenues } from '../features/venues/useVenues';
 
 export function VenueListPage() {
+  const [page, setPage] = useState(1);
+  const { venues, loading, error } = useVenues(50, page);
+
   const [search, setSearch] = useState('');
-  const [venues, setVenues] = useState<TVenue[]>([]);
   const [sortOption, setSortOption] = useState<'newest' | 'alphabetical'>(
     'newest'
   );
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function fetchVenues() {
-      try {
-        const response = await fetch(
-          'https://v2.api.noroff.dev/holidaze/venues?limit=100'
-        );
-        if (!response.ok) {
-          throw new Error('Failed to fetch venues');
-        }
-        const result = await response.json();
-        setVenues(result.data);
-      } catch (err: unknown) {
-        setError(err instanceof Error ? err.message : 'Unknown error');
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchVenues();
-  }, []);
   const filteredVenues = venues
     .filter((venue) => venue.name.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => {
@@ -44,13 +24,8 @@ export function VenueListPage() {
       return 0;
     });
 
-  if (loading) {
-    return <p>Loading venues...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
+  if (loading) return <p>Loading venues...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div>
@@ -77,6 +52,23 @@ export function VenueListPage() {
           <VenueCard key={venue.id} venue={venue} />
         ))}
       </ul>
+
+      <div className="flex justify-center my-6 gap-4">
+        <button
+          onClick={() => setPage((p) => Math.max(1, p - 1))}
+          disabled={page === 1}
+          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+        >
+          Previous
+        </button>
+        <span className="px-4 py-2">Page {page}</span>
+        <button
+          onClick={() => setPage((p) => p + 1)}
+          className="px-4 py-2 bg-gray-200 rounded"
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }
