@@ -1,12 +1,39 @@
-import { Button } from "../components/common/Button";
+import { useState } from 'react';
+import { Button } from '../components/common/Button';
+import { login } from '../features/auth/services';
 
 export function LoginPage() {
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    const form = new FormData(e.currentTarget);
+    const email = form.get('email') as string;
+    const password = form.get('password') as string;
+
+    try {
+      const { user } = await login(email, password);
+      console.log('Logged in user:', user);
+
+      window.location.href = '/';
+    } catch {
+      setError('Login failed. Please check your credentials.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div>
-      <form action="">
+      <form onSubmit={handleSubmit} className="bg-white rounded-sm p-4">
         <h2 className="font-headings text-transform: uppercase text-2xl">
           Log into your Holidaze account
         </h2>
+
         <label
           htmlFor="email"
           className="font-headings text-transform: uppercase"
@@ -14,6 +41,7 @@ export function LoginPage() {
           Email
         </label>
         <input id="email" type="email" name="email" required />
+
         <label
           htmlFor="password"
           className="font-headings text-transform: uppercase"
@@ -21,7 +49,13 @@ export function LoginPage() {
           Password
         </label>
         <input id="password" type="password" name="password" required />
-        <Button type="submit">Login</Button>
+
+        <Button type="submit" disabled={loading}>
+          {loading ? 'Logging in...' : 'Login'}
+        </Button>
+
+        {error && <p className="text-cta">{error}</p>}
+
         <p className="font-headings text-transform: uppercase">
           Don't have an account? Register{' '}
           <a href="/register" className="text-cta">
