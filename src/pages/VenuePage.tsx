@@ -27,7 +27,7 @@ export function VenuePage() {
   }
 
   return (
-    <div>
+    <div className="bg-white p-6 rounded-lg shadow-md mx-auto mt-10">
       <h1 className="font-headings text-transform: uppercase text-xl text-center m-4">
         {venue.name}
       </h1>

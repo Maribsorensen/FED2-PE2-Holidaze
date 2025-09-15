@@ -28,8 +28,8 @@ export function LoginPage() {
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} className="bg-white rounded-sm p-4">
+    <div className="bg-white p-6 rounded-lg shadow-md mx-auto mt-10">
+      <form onSubmit={handleSubmit}>
         <h2 className="font-headings text-transform: uppercase text-2xl">
           Log into your Holidaze account
         </h2>
