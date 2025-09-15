@@ -1,4 +1,5 @@
 const BASE_URL = 'https://v2.api.noroff.dev';
+const API_KEY = '6bc5ec58-a1ee-41c7-885f-b4a1c70b0044';
 
 export async function fetchApi<T>(
   endpoint: string,
@@ -10,6 +11,7 @@ export async function fetchApi<T>(
     ...options,
     headers: {
       'Content-Type': 'application/json',
+      'X-Noroff-API-Key': API_KEY,
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...options.headers,
     },

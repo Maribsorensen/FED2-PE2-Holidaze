@@ -18,14 +18,12 @@ export function RegisterPage() {
     const venueManager = form.get('venueManager') === 'on';
 
     try {
-      const { user } = await register(name, email, password, venueManager);
+      const user = await register(name, email, password, venueManager);
       console.log('Registered user:', user);
 
       window.location.href = '/';
     } catch {
       setError('Registration failed. Please check your credentials.');
-    } finally {
-      setLoading(false);
     }
   }
   return (

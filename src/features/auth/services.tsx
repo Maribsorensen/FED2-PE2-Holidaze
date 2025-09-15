@@ -1,13 +1,10 @@
 import { fetchApi } from '../../lib/api';
 import { clearToken, setToken } from '../../lib/auth';
-import type { TUser } from '../../types/user';
-
-type AuthCredentials = {
-  data: {
-    user: TUser;
-    accessToken: string;
-  };
-};
+import type {
+  AuthCredentials,
+  RegisterCredentials,
+  TUser,
+} from '../../types/user';
 
 export async function login(
   email: string,
@@ -17,21 +14,27 @@ export async function login(
     method: 'POST',
     body: JSON.stringify({ email, password }),
   });
-  setToken(response.data.accessToken);
-  return response.data;
+
+  const { accessToken, ...user } = response.data;
+
+  setToken(accessToken, user.name);
+
+  return { user, accessToken };
 }
 
 export async function register(
   name: string,
   email: string,
   password: string,
-  venueManager = false
-): Promise<{ user: TUser; accessToken: string }> {
-  await fetchApi('/auth/register', {
+  venueManager: boolean
+): Promise<TUser> {
+  const response = await fetchApi<RegisterCredentials>('/auth/register', {
     method: 'POST',
     body: JSON.stringify({ name, email, password, venueManager }),
   });
-  return login(email, password);
+
+  await login(email, password);
+  return response.data;
 }
 
 export function logout() {
