@@ -57,11 +57,11 @@ export function ProfilePage() {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mx-auto mt-10">
       <div className="grid grid-cols-2 items-center">
-        <div className="flex flex-col items-start">
+        <div className="flex flex-col items-center">
           <img
             src={user.avatar.url}
             alt={user.avatar.alt}
-            className="w-32 h-32 rounded-full object-cover mb-2"
+            className="w-46 h-46 rounded-full object-cover mb-2"
           />
           <Button onClick={() => setIsModalOpen(true)}>Change avatar</Button>
         </div>
@@ -101,9 +101,7 @@ export function ProfilePage() {
           />
           <div className="flex justify-center gap-2 mt-4">
             <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
-            <Button onClick={handleSaveAvatar} className="rounded-lg shadow">
-              Save
-            </Button>
+            <Button onClick={handleSaveAvatar}>Save</Button>
           </div>
         </div>
       </Modal>

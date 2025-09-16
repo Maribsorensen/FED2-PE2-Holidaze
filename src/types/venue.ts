@@ -1,3 +1,5 @@
+import type { TBookings } from './bookings';
+
 export type TVenue = {
   id: string;
   name: string;
@@ -35,4 +37,5 @@ export type TVenue = {
       alt: string;
     };
   };
+  bookings?: TBookings[];
 };
