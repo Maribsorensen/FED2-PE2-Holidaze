@@ -1,6 +1,6 @@
 import VenueForm from '../components/common/VenueForm';
 
-export default function CreateVenuePage() {
+export function CreateVenuePage() {
   const handleSubmit = async (data: any) => {
     //  call API to create venue
     console.log('New venue data:', data);

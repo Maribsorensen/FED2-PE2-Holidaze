@@ -5,6 +5,7 @@ import type { TUser } from '../types/user';
 import { updateAvatar } from '../features/profile/UpdateAvatar';
 import Modal from '../components/common/Modal';
 import { Button } from '../components/common/Button';
+import { Link } from 'react-router-dom';
 
 export function ProfilePage() {
   const [user, setUser] = useState<TUser | null>(null);
@@ -79,7 +80,7 @@ export function ProfilePage() {
         </h2>
         <Bookings />
       </div>
-
+      <Link to="/create-venue"> Create Venue</Link>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <h2 className="text-lg font-headings font-semibold text-transform: uppercase mb-4">
           Update Avatar

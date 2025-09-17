@@ -29,61 +29,98 @@ export default function VenueForm({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="name"
-        placeholder="Venue name"
-        value={formData.name || ''}
-        onChange={handleChange}
-      />
-
-      <textarea
-        name="description"
-        placeholder="Description"
-        value={formData.description || ''}
-        onChange={handleChange}
-      />
-
-      <input
-        type="number"
-        name="price"
-        placeholder="Price per night"
-        value={formData.price || ''}
-        onChange={handleChange}
-      />
-
-      <label>
+    <div className="bg-white p-6 rounded-lg shadow-md mx-auto mt-10">
+      <form onSubmit={handleSubmit}>
         <input
-          type="checkbox"
-          name="wifi"
-          checked={formData.meta?.wifi || false}
-          onChange={(e) =>
-            setFormData((prev) => ({
-              ...prev,
-              meta: { ...prev.meta, wifi: e.target.checked },
-            }))
-          }
+          type="text"
+          name="name"
+          placeholder="Venue name"
+          value={formData.name || ''}
+          onChange={handleChange}
         />
-        Wifi
-      </label>
 
-      <label>
+        <textarea
+          name="description"
+          placeholder="Description"
+          value={formData.description || ''}
+          onChange={handleChange}
+        />
+
         <input
-          type="checkbox"
-          name="parking"
-          checked={formData.meta?.parking || false}
-          onChange={(e) =>
-            setFormData((prev) => ({
-              ...prev,
-              meta: { ...prev.meta, parking: e.target.checked },
-            }))
-          }
+          type="number"
+          name="price"
+          placeholder="Price per night"
+          value={formData.price || ''}
+          onChange={handleChange}
         />
-        Parking
-      </label>
+        <input
+          type="number"
+          name="maxGuests"
+          placeholder="Max Guests"
+          value={formData.maxGuests || ''}
+          onChange={handleChange}
+        />
 
-      <Button type="submit">Save Venue</Button>
-    </form>
+        <label>
+          <input
+            type="checkbox"
+            name="wifi"
+            checked={formData.meta?.wifi || false}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                meta: { ...prev.meta, wifi: e.target.checked },
+              }))
+            }
+          />
+          Wifi
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="parking"
+            checked={formData.meta?.parking || false}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                meta: { ...prev.meta, parking: e.target.checked },
+              }))
+            }
+          />
+          Parking
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            name="parking"
+            checked={formData.meta?.parking || false}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                meta: { ...prev.meta, parking: e.target.checked },
+              }))
+            }
+          />
+          Pets
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            name="parking"
+            checked={formData.meta?.parking || false}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                meta: { ...prev.meta, parking: e.target.checked },
+              }))
+            }
+          />
+          Breakfast included
+        </label>
+
+        <Button type="submit">Save Venue</Button>
+      </form>
+    </div>
   );
 }
