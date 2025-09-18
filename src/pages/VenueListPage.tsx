@@ -1,31 +1,41 @@
 import { VenueCard } from '../components/common/VenueCard';
 import { SearchBar } from '../components/common/SearchBar';
-import { useState } from 'react';
-import { useVenues } from '../features/venues/useVenues';
+import { useEffect, useState } from 'react';
+import { useSearchVenues, useVenues } from '../features/venues/useVenues';
+
+function useDebouncedValue<T>(value: T, delay: number = 300): T {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(handler); // cancel timeout if value changes
+  }, [value, delay]);
+
+  return debouncedValue;
+}
 
 export function VenueListPage() {
   const [page, setPage] = useState(1);
-  const { venues, loading, error } = useVenues(50, page);
-
   const [search, setSearch] = useState('');
+  const debouncedSearch = useDebouncedValue(search, 300); // update after 300ms of no typing
   const [sortOption, setSortOption] = useState<'newest' | 'alphabetical'>(
     'newest'
   );
 
-  const filteredVenues = venues
-    .filter((venue) => venue.name.toLowerCase().includes(search.toLowerCase()))
-    .sort((a, b) => {
-      if (sortOption === 'newest') {
-        return new Date(b.created).getTime() - new Date(a.created).getTime();
-      }
-      if (sortOption === 'alphabetical') {
-        return a.name.localeCompare(b.name);
-      }
-      return 0;
-    });
+  // Always call hooks in same order
+  const venuesData = useVenues(50, page);
+  const searchData = useSearchVenues(debouncedSearch, 50, page);
 
-  if (loading) return <p>Loading venues...</p>;
-  if (error) return <p>Error: {error}</p>;
+  const venues = debouncedSearch ? searchData.venues : venuesData.venues;
+  const loading = debouncedSearch ? searchData.loading : venuesData.loading;
+  const error = debouncedSearch ? searchData.error : venuesData.error;
+
+  const sortedVenues = venues.sort((a, b) => {
+    if (sortOption === 'newest')
+      return new Date(b.created).getTime() - new Date(a.created).getTime();
+    if (sortOption === 'alphabetical') return a.name.localeCompare(b.name);
+    return 0;
+  });
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mx-auto mt-10">
@@ -47,8 +57,11 @@ export function VenueListPage() {
         </select>
       </div>
 
+      {loading && <p>Loading venues...</p>}
+      {error && <p>Error: {error}</p>}
+
       <ul className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
-        {filteredVenues.map((venue) => (
+        {sortedVenues.map((venue) => (
           <VenueCard key={venue.id} venue={venue} />
         ))}
       </ul>
