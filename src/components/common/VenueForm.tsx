@@ -1,126 +1,169 @@
-import { useState } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
 import type { TVenue } from '../../types/venue';
 import { Button } from './Button';
 
+type TVenueFormData = Omit<TVenue, 'media'> & {
+  media: { url: string; alt: string }[];
+};
+
 type VenueFormProps = {
-  initialData?: Partial<TVenue>;
-  onSubmit: (data: Partial<TVenue>) => void;
+  initialData?: Partial<TVenueFormData>;
+  onSubmit: (data: Partial<TVenueFormData>) => void;
 };
 
 export default function VenueForm({
   initialData = {},
   onSubmit,
 }: VenueFormProps) {
-  const [formData, setFormData] = useState<Partial<TVenue>>(initialData);
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Partial<TVenueFormData>>({
+    defaultValues: {
+      ...initialData,
+      media: initialData.media
+        ? Array.isArray(initialData.media)
+          ? initialData.media
+          : [initialData.media]
+        : [{ url: '', alt: '' }],
+      location: initialData.location || { address: '', city: '', country: '' },
+    },
+  });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(formData);
-  };
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'media',
+  });
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mx-auto mt-10">
-      <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-3 p-4 bg-white rounded-lg shadow-md max-h-[80vh] overflow-y-auto"
+    >
+      <input
+        type="text"
+        placeholder="Venue name"
+        {...register('name', { required: 'Venue name is required' })}
+        className="border rounded-lg p-2"
+      />
+      {errors.name && <p className="text-red-500">{errors.name.message}</p>}
+
+      <textarea
+        placeholder="Description"
+        {...register('description', { required: 'Description is required' })}
+        className="border rounded-lg p-2"
+      />
+      {errors.description && (
+        <p className="text-red-500">{errors.description.message}</p>
+      )}
+
+      <input
+        type="number"
+        placeholder="Price per night"
+        {...register('price', {
+          required: 'Price is required',
+          valueAsNumber: true,
+        })}
+        className="border rounded-lg p-2"
+      />
+      {errors.price && <p className="text-red-500">{errors.price.message}</p>}
+
+      <input
+        type="number"
+        placeholder="Max guests"
+        {...register('maxGuests', {
+          required: 'Max guests is required',
+          valueAsNumber: true,
+        })}
+        className="border rounded-lg p-2"
+      />
+      {errors.maxGuests && (
+        <p className="text-red-500">{errors.maxGuests.message}</p>
+      )}
+
+      <label>
+        <input type="checkbox" {...register('meta.wifi')} /> Wifi
+      </label>
+      <label>
+        <input type="checkbox" {...register('meta.parking')} /> Parking
+      </label>
+      <label>
+        <input type="checkbox" {...register('meta.pets')} /> Pets
+      </label>
+      <label>
+        <input type="checkbox" {...register('meta.breakfast')} /> Breakfast
+        included
+      </label>
+
+      {/* Media */}
+      <div className="flex flex-col gap-2">
+        <h3 className="font-semibold">Media</h3>
+        {fields.map((field, index) => (
+          <div key={field.id} className="flex gap-2 items-center">
+            <input
+              placeholder="Image URL"
+              {...register(`media.${index}.url`, {
+                required:
+                  index === 0 ? 'At least one image URL is required' : false,
+              })}
+              className="border rounded-lg p-2"
+            />
+            {errors.media?.[index]?.url && (
+              <p className="text-red-500">{errors.media[index].url?.message}</p>
+            )}
+            <input
+              placeholder="Alt text"
+              {...register(`media.${index}.alt`)}
+              className="border rounded-lg p-2"
+            />
+            {index > 0 && (
+              <Button type="button" onClick={() => remove(index)}>
+                -
+              </Button>
+            )}
+          </div>
+        ))}
+        <Button type="button" onClick={() => append({ url: '', alt: '' })}>
+          + Add Image
+        </Button>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <h3 className="font-semibold">Location</h3>
         <input
           type="text"
-          name="name"
-          placeholder="Venue name"
-          value={formData.name || ''}
-          onChange={handleChange}
+          placeholder="Address"
+          {...register('location.address', { required: 'Address is required' })}
+          className="border rounded-lg p-2"
         />
-
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={formData.description || ''}
-          onChange={handleChange}
-        />
+        {errors.location?.address && (
+          <p className="text-red-500">{errors.location.address.message}</p>
+        )}
 
         <input
-          type="number"
-          name="price"
-          placeholder="Price per night"
-          value={formData.price || ''}
-          onChange={handleChange}
+          type="text"
+          placeholder="City"
+          {...register('location.city', { required: 'City is required' })}
+          className="border rounded-lg p-2"
         />
+        {errors.location?.city && (
+          <p className="text-red-500">{errors.location.city.message}</p>
+        )}
+
         <input
-          type="number"
-          name="maxGuests"
-          placeholder="Max Guests"
-          value={formData.maxGuests || ''}
-          onChange={handleChange}
+          type="text"
+          placeholder="Country"
+          {...register('location.country', { required: 'Country is required' })}
+          className="border rounded-lg p-2"
         />
+        {errors.location?.country && (
+          <p className="text-red-500">{errors.location.country.message}</p>
+        )}
+      </div>
 
-        <label>
-          <input
-            type="checkbox"
-            name="wifi"
-            checked={formData.meta?.wifi || false}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                meta: { ...prev.meta, wifi: e.target.checked },
-              }))
-            }
-          />
-          Wifi
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            name="parking"
-            checked={formData.meta?.parking || false}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                meta: { ...prev.meta, parking: e.target.checked },
-              }))
-            }
-          />
-          Parking
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            name="parking"
-            checked={formData.meta?.parking || false}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                meta: { ...prev.meta, parking: e.target.checked },
-              }))
-            }
-          />
-          Pets
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            name="parking"
-            checked={formData.meta?.parking || false}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                meta: { ...prev.meta, parking: e.target.checked },
-              }))
-            }
-          />
-          Breakfast included
-        </label>
-
-        <Button type="submit">Save Venue</Button>
-      </form>
-    </div>
+      <Button type="submit">Save Venue</Button>
+    </form>
   );
 }

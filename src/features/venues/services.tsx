@@ -20,3 +20,19 @@ export async function searchVenues(
   );
   return response.data;
 }
+
+export async function createVenue(data: Partial<TVenue>): Promise<TVenue> {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('No access token found');
+
+  const response = await fetchApi<TVenue>(`/holidaze/venues`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  return response;
+}

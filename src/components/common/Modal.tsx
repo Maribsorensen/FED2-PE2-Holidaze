@@ -13,8 +13,15 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
       isOpen={isOpen}
       onRequestClose={onClose}
       ariaHideApp={false}
-      className="bg-white rounded-2xl p-6 shadow-lg max-w-md mx-auto mt-20"
-      overlayClassName="fixed inset-0 bg-black/50 flex items-start justify-center"
+      className="
+        relative bg-white rounded-2xl p-6 shadow-lg
+        max-w-lg w-full mx-4
+        max-h-[90vh] overflow-y-auto
+      "
+      overlayClassName="
+        fixed inset-0 bg-black/50 flex items-center justify-center
+        overflow-y-auto
+      "
     >
       {children}
     </ReactModal>

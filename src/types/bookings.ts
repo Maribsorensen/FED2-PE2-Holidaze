@@ -1,3 +1,5 @@
+import type { TVenue } from './venue';
+
 export type TBookings = {
   id: string;
   dateFrom: string;
@@ -5,4 +7,5 @@ export type TBookings = {
   guests: number;
   created: string;
   updated: string;
+  venue: TVenue;
 };
