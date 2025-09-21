@@ -36,3 +36,10 @@ export async function createVenue(data: Partial<TVenue>): Promise<TVenue> {
 
   return response;
 }
+
+export async function getVenuesForUser(name: string): Promise<TVenue[]> {
+  const data = await fetchApi<{ data: TVenue[] }>(
+    `/holidaze/profiles/${name}/venues`
+  );
+  return data.data;
+}

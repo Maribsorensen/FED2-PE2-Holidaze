@@ -7,6 +7,7 @@ import Modal from '../components/common/Modal';
 import { Button } from '../components/common/Button';
 import { createVenue } from '../features/venues/services';
 import VenueForm from '../components/common/VenueForm';
+import { Venues } from '../components/common/Venues';
 
 export function ProfilePage() {
   const [user, setUser] = useState<TUser | null>(null);
@@ -54,7 +55,8 @@ export function ProfilePage() {
       console.error('Failed to update avatar', err);
     }
   };
-
+  type Tab = 'bookings' | 'venues';
+  const [activeTab, setActiveTab] = useState<Tab>('bookings');
   const handleCreateVenue = async (data: Partial<TUser>) => {
     try {
       await createVenue(data);
@@ -69,39 +71,81 @@ export function ProfilePage() {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mx-auto mt-10">
-      <div className="grid grid-cols-2 items-center">
-        <div className="flex flex-col items-center">
+      {/* Profile Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-center md:gap-6 mb-8">
+        <div className="flex flex-col items-center  text-center sm:text-left">
           <img
             src={user.avatar.url}
             alt={user.avatar.alt}
-            className="w-46 h-46 rounded-full object-cover mb-2"
+            className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-gray-100 shadow"
           />
           <Button onClick={() => setIsAvatarModalOpen(true)}>
-            Change avatar
+            Change Avatar
           </Button>
         </div>
-        <div>
-          <ul>
-            <li>Name: {user.name}</li>
-            <li>Email: {user.email}</li>
+        <div className="mt-6 sm:mt-0">
+          <ul className="space-y-1 text-gray-700">
+            <li>
+              <span className="font-semibold">Name:</span> {user.name}
+            </li>
+            <li>
+              <span className="font-semibold">Email:</span> {user.email}
+            </li>
           </ul>
         </div>
       </div>
 
-      {user.venueManager && (
-        <div className="mt-6">
-          <Button onClick={() => setIsVenueModalOpen(true)}>
-            Create Venue
-          </Button>
+      {/* Tabs */}
+      <div className="flex border-b border-gray-200 mb-6">
+        <button
+          className={`px-4 py-2 -mb-px border-b-2 transition-colors ${
+            activeTab === 'bookings'
+              ? 'border-primary text-primary font-semibold'
+              : 'border-transparent text-gray-500 hover:text-primary'
+          }`}
+          onClick={() => setActiveTab('bookings')}
+        >
+          My Bookings
+        </button>
+        {user.venueManager && (
+          <button
+            className={`px-4 py-2 -mb-px border-b-2 transition-colors ${
+              activeTab === 'venues'
+                ? 'border-primary text-primary font-semibold'
+                : 'border-transparent text-gray-500 hover:text-primary'
+            }`}
+            onClick={() => setActiveTab('venues')}
+          >
+            My Venues
+          </button>
+        )}
+      </div>
+
+      {/* Content */}
+      {activeTab === 'bookings' && (
+        <div>
+          <h2 className="text-xl font-headings font-semibold mb-4 uppercase">
+            Your Bookings
+          </h2>
+          {user && <Bookings userName={user.name} />}
         </div>
       )}
 
-      <div className="mt-6">
-        <h2 className="text-xl font-headings font-semibold mb-2 uppercase">
-          Your bookings
-        </h2>
-        {user && <Bookings userName={user.name} />}
-      </div>
+      {activeTab === 'venues' && user.venueManager && (
+        <div>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-headings font-semibold uppercase">
+              Your Venues
+            </h2>
+            <Button onClick={() => setIsVenueModalOpen(true)}>
+              Create Venue
+            </Button>
+          </div>
+          {user && <Venues userName={user.name} />}
+        </div>
+      )}
+
+      {/* Avatar Modal */}
       <Modal
         isOpen={isAvatarModalOpen}
         onClose={() => setIsAvatarModalOpen(false)}
@@ -124,12 +168,14 @@ export function ProfilePage() {
             onChange={(e) => setAvatarAlt(e.target.value)}
             className="border rounded-lg p-2 font-body"
           />
-          <div className="flex justify-center gap-2 mt-4">
+          <div className="flex justify-end gap-2 mt-4">
             <Button onClick={() => setIsAvatarModalOpen(false)}>Cancel</Button>
             <Button onClick={handleSaveAvatar}>Save</Button>
           </div>
         </div>
       </Modal>
+
+      {/* Venue Modal */}
       <Modal
         isOpen={isVenueModalOpen}
         onClose={() => setIsVenueModalOpen(false)}
