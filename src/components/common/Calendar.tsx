@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+import './calendar-custom.css';
 import { Button } from './Button';
 
 interface BookingCalendarProps {
@@ -19,7 +19,7 @@ export function BookingCalendar({ disabledDates = [] }: BookingCalendarProps) {
     );
 
   return (
-    <div className="p-4 rounded-md max-w-3xl mx-auto border">
+    <div className="p-6 rounded-2xl max-w-3xl mx-auto border shadow-md bg-white space-y-4">
       <Calendar
         selectRange
         onChange={(value: Date | Date[] | null) => {
@@ -29,9 +29,11 @@ export function BookingCalendar({ disabledDates = [] }: BookingCalendarProps) {
         }}
         tileDisabled={({ date }) => isDateDisabled(date)}
         minDate={new Date()}
+        className="custom-calendar"
       />
 
       <Button
+        className="w-full"
         onClick={() => {
           if (selectedRange && selectedRange.length === 2) {
             alert(

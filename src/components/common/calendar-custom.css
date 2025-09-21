@@ -1,0 +1,84 @@
+/* Base calendar styling */
+.custom-calendar {
+  border: none;
+  font-family: 'Lato', sans-serif; /* choose one font */
+  width: 100%;
+}
+
+/* Navigation (month/year header) */
+.custom-calendar .react-calendar__navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.custom-calendar .react-calendar__navigation button {
+  color: black;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.custom-calendar .react-calendar__navigation button:hover:not(:disabled) {
+  background-color: #a0d6cf;
+}
+
+.custom-calendar .react-calendar__navigation button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Days of the week header */
+.custom-calendar .react-calendar__month-view__weekdays {
+  text-align: center;
+  font-weight: bold;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+
+/* Individual day tiles */
+.custom-calendar .react-calendar__tile {
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  transition:
+    background 0.2s,
+    color 0.2s;
+  cursor: pointer;
+}
+
+/* Hover effect for selectable days */
+.custom-calendar .react-calendar__tile:enabled:hover {
+  background-color: #a0d6cf;
+}
+
+/* Disabled days */
+.custom-calendar .react-calendar__tile:disabled {
+  color: #9ca3af;
+  background: #f3f4f6;
+  cursor: not-allowed;
+}
+
+/* Selected day */
+.custom-calendar .react-calendar__tile--active {
+  background-color: #3e8a7e;
+  color: white;
+}
+
+/* Range selection */
+.custom-calendar .react-calendar__tile--range {
+  background-color: #99ccc5;
+  color: #1f4f4b;
+}
+
+/* Highlight start and end of range */
+.custom-calendar .react-calendar__tile--rangeStart,
+.custom-calendar .react-calendar__tile--rangeEnd {
+  background-color: #3e8a7e;
+  color: white;
+}
