@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { VenueCard } from './VenueCard';
 import type { TBookings } from '../../types/bookings';
 import { getBookingsForUser } from '../../features/bookings/services';
+import { BookingCard } from './BookingCard';
 
 type BookingsProps = {
   userName: string;
@@ -28,11 +28,33 @@ export function Bookings({ userName }: BookingsProps) {
   if (loading) return <p>Loading bookings...</p>;
   if (!bookings.length) return <p>You have no bookings yet.</p>;
 
-  return (
+  const now = new Date();
+  const upcoming = bookings.filter((b) => new Date(b.dateTo) >= now);
+  const past = bookings.filter((b) => new Date(b.dateTo) < now);
+
+  const renderList = (list: TBookings[]) => (
     <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {bookings.map((booking) => (
-        <VenueCard key={booking.id} venue={booking.venue} />
+      {list.map((b) => (
+        <BookingCard key={b.venueId} booking={b} />
       ))}
     </ul>
+  );
+
+  return (
+    <div className="space-y-8">
+      {upcoming.length > 0 && (
+        <section>
+          <h2 className="text-lg font-semibold mb-4">Upcoming Bookings</h2>
+          {renderList(upcoming)}
+        </section>
+      )}
+
+      {past.length > 0 && (
+        <section>
+          <h2 className="text-lg font-semibold mb-4">Past Bookings</h2>
+          {renderList(past)}
+        </section>
+      )}
+    </div>
   );
 }
