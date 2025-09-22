@@ -4,9 +4,10 @@ import { FaMapMarkerAlt } from 'react-icons/fa';
 
 type VenueCardProps = {
   venue: TVenue;
+  actions?: React.ReactNode;
 };
 
-export function VenueCard({ venue }: VenueCardProps) {
+export function VenueCard({ venue, actions }: VenueCardProps) {
   const image =
     Array.isArray(venue.media) && venue.media.length > 0
       ? venue.media[0]
@@ -27,15 +28,17 @@ export function VenueCard({ venue }: VenueCardProps) {
           {venue.rating.toFixed(1)}
         </span>
         <div className="absolute bottom-0 w-full bg-black/50 text-white py-2 px-3 h-1/3">
-          <h2 className="text-md text-transform: uppercase font-headings">
-            {venue.name}
-          </h2>
-          <p className="flex items-center gap-1 text-xs text-transform: uppercase font-headings absolute bottom-2">
+          <h2 className="text-md uppercase font-headings">{venue.name}</h2>
+          <p className="flex items-center gap-1 text-xs uppercase font-headings absolute bottom-2">
             <FaMapMarkerAlt className="text-cta" />
             {venue.location.city}, {venue.location.country}
           </p>
         </div>
       </Link>
+
+      {actions && (
+        <div className="absolute top-2 right-2 flex gap-2">{actions}</div>
+      )}
     </li>
   );
 }

@@ -1,9 +1,14 @@
 import { fetchApi } from '../../lib/api';
 import type { TVenue } from '../../types/venue';
 
-export async function getVenues(limit = 40, page = 1): Promise<TVenue[]> {
+export async function getVenues(
+  limit = 40,
+  page = 1,
+  sort = 'created',
+  sortOrder: 'asc' | 'desc' = 'desc'
+): Promise<TVenue[]> {
   const response = await fetchApi<{ data: TVenue[] }>(
-    `/holidaze/venues?limit=${limit}&page=${page}`
+    `/holidaze/venues?limit=${limit}&page=${page}&sort=${sort}&sortOrder=${sortOrder}`
   );
   return response.data;
 }
@@ -42,4 +47,32 @@ export async function getVenuesForUser(name: string): Promise<TVenue[]> {
     `/holidaze/profiles/${name}/venues`
   );
   return data.data;
+}
+
+export async function editVenue(
+  id: string,
+  data: Partial<TVenue>
+): Promise<TVenue> {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('No access token found');
+  const response = await fetchApi<TVenue>(`/holidaze/venues/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+  return response;
+}
+
+export async function deleteVenue(id: string): Promise<void> {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('No access token found');
+  await fetchApi(`/holidaze/venues/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }

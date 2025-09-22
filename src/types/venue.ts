@@ -4,10 +4,7 @@ export type TVenue = {
   id: string;
   name: string;
   description: string;
-  media: {
-    url: string;
-    alt: string;
-  };
+  media: { url: string; alt: string }[];
   price: number;
   created: string;
   updated: string;

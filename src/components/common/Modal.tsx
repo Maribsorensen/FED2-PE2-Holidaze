@@ -19,7 +19,7 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
         max-h-[100vh] overflow-y-auto
       "
       overlayClassName="
-        fixed inset-0 bg-black/50 flex items-center justify-center
+        fixed inset-0 bg-black/50 backdrop-blur flex items-center justify-center
         overflow-y-auto
       "
     >
