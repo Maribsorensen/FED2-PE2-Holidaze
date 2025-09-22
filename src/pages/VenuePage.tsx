@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import type { TVenue } from '../types/venue';
 import { VenueGallery } from '../components/common/VenueGallery';
-import type { TBookings } from '../types/bookings';
-import { BookingCalendar } from '../components/common/Calendar';
+import { BookingSection } from '../components/common/BookingSection';
 
 export function VenuePage() {
   const { id } = useParams<{ id: string }>();
@@ -28,18 +27,6 @@ export function VenuePage() {
   if (!venue) {
     return <p>Cannot find venue...</p>;
   }
-
-  const disabledDates: Date[] =
-    venue.bookings?.flatMap((booking: TBookings) => {
-      const start = new Date(booking.dateFrom);
-      const end = new Date(booking.dateTo);
-
-      const dates: Date[] = [];
-      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-        dates.push(new Date(d));
-      }
-      return dates;
-    }) || [];
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mx-auto mt-10">
@@ -82,7 +69,7 @@ export function VenuePage() {
           </ul>
         </div>
       </div>
-      <BookingCalendar disabledDates={disabledDates} />
+      <BookingSection venue={venue} />
     </div>
   );
 }

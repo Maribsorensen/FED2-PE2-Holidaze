@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Bookings } from '../components/common/Bookings';
+import { Bookings } from '../components/common/ProfileBookings';
 import { getProfile } from '../features/profile/services';
 import type { TUser } from '../types/user';
 import { updateAvatar } from '../features/profile/UpdateAvatar';
@@ -7,7 +7,7 @@ import Modal from '../components/common/Modal';
 import { Button } from '../components/common/Button';
 import { createVenue } from '../features/venues/services';
 import VenueForm from '../components/common/VenueForm';
-import { Venues } from '../components/common/Venues';
+import { Venues } from '../components/common/ProfileVenues';
 
 export function ProfilePage() {
   const [user, setUser] = useState<TUser | null>(null);
