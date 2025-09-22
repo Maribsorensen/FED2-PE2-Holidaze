@@ -123,20 +123,12 @@ export function ProfilePage() {
 
       {/* Content */}
       {activeTab === 'bookings' && (
-        <div>
-          <h2 className="text-xl font-headings font-semibold mb-4 uppercase">
-            Your Bookings
-          </h2>
-          {user && <Bookings userName={user.name} />}
-        </div>
+        <div>{user && <Bookings userName={user.name} />}</div>
       )}
 
       {activeTab === 'venues' && user.venueManager && (
         <div>
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-headings font-semibold uppercase">
-              Your Venues
-            </h2>
             <Button onClick={() => setIsVenueModalOpen(true)}>
               Create Venue
             </Button>
