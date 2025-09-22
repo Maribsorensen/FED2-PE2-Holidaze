@@ -18,7 +18,7 @@ export const Button = ({
   return (
     <button
       type={type}
-      className={`font-headings text-white text-transform: uppercase bg-cta rounded-sm px-3 py-1 hover:cursor-pointer ${className}`}
+      className={`font-headings text-white text-transform: uppercase bg-cta rounded-sm px-3 py-1 hover:cursor-pointer hover:bg-cta-hover ${className}`}
       onClick={onClick}
       disabled={disabled}
     >

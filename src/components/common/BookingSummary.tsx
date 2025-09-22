@@ -1,3 +1,5 @@
+import { Button } from './Button';
+
 interface BookingSummaryProps {
   selectedRange: Date[] | null;
   guests: number;
@@ -32,12 +34,9 @@ export function BookingSummary({
       <p>
         <strong>Total:</strong> ${nights * pricePerNight}
       </p>
-      <button
-        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
-        onClick={onBook}
-      >
+      <Button onClick={onBook} className="w-full">
         Book Now
-      </button>
+      </Button>
     </div>
   );
 }
