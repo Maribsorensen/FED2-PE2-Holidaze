@@ -7,4 +7,5 @@ export function getToken(): string | null {
 }
 export function clearToken() {
   localStorage.removeItem('token');
+  localStorage.removeItem('name');
 }

@@ -1,12 +1,37 @@
+import { FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa6';
+
 export function Footer() {
   return (
-    <footer className="bg-primary text-white">
-      <div>
-        <div>&copy; Holidaze {new Date().getFullYear()}</div>
-        <div>
-          <a href="https://facebook.com">Facebook</a>
-          <a href="https://instagram.com">Instagram</a>
-          <a href="https://twitter.com">Twitter</a>
+    <footer className="bg-primary text-white font-body py-6">
+      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="text-sm md:text-base">
+          &copy; Holidaze {new Date().getFullYear()}
+        </div>
+        <div className="flex gap-4">
+          <a
+            href="https://facebook.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-cta transition-colors"
+          >
+            <FaFacebookF size={20} />
+          </a>
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-cta transition-colors"
+          >
+            <FaInstagram size={20} />
+          </a>
+          <a
+            href="https://twitter.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-cta transition-colors"
+          >
+            <FaTwitter size={20} />
+          </a>
         </div>
       </div>
     </footer>
