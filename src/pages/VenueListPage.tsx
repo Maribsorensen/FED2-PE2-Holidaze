@@ -3,9 +3,10 @@ import { SearchBar } from '../components/common/SearchBar';
 import { useEffect, useState } from 'react';
 import { useSearchVenues, useVenues } from '../features/venues/useVenues';
 
-function useDebouncedValue<T>(value: T, delay: number = 300): T {
+function useDebouncedValue<T>(value: T, delay = 500): T {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
+  // Keep original useEffect-based debounce
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedValue(value), delay);
     return () => clearTimeout(handler);
@@ -22,19 +23,23 @@ export function VenueListPage() {
     'newest'
   );
 
-  const venuesData = useVenues(50, page);
-  const searchData = useSearchVenues(debouncedSearch, 50, page);
+  const PAGE_SIZE = 50;
 
+  // Determine API sort parameters
+  const sortField = sortOption === 'newest' ? 'created' : 'name';
+  const sortOrder = sortOption === 'newest' ? 'desc' : 'asc';
+
+  // Normal venues, server-side sorted
+  const venuesData = useVenues(PAGE_SIZE, page, sortField, sortOrder);
+
+  // Search venues (unchanged, works as before)
+  const searchData = useSearchVenues(debouncedSearch, PAGE_SIZE, page);
+
+  // Determine which data to use
   const venues = debouncedSearch ? searchData.venues : venuesData.venues;
+  const meta = debouncedSearch ? undefined : venuesData.meta; // Only normal list has pagination
   const loading = debouncedSearch ? searchData.loading : venuesData.loading;
   const error = debouncedSearch ? searchData.error : venuesData.error;
-
-  const sortedVenues = venues.sort((a, b) => {
-    if (sortOption === 'newest')
-      return new Date(b.created).getTime() - new Date(a.created).getTime();
-    if (sortOption === 'alphabetical') return a.name.localeCompare(b.name);
-    return 0;
-  });
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mx-auto mt-10">
@@ -42,6 +47,7 @@ export function VenueListPage() {
         Venues
       </h1>
 
+      {/* Search and sorting */}
       <div className="flex flex-col sm:flex-row justify-center gap-4 m-4">
         <SearchBar value={search} onChange={setSearch} />
         <select
@@ -56,31 +62,41 @@ export function VenueListPage() {
         </select>
       </div>
 
+      {/* Loading / error */}
       {loading && <p>Loading venues...</p>}
       {error && <p>Error: {error}</p>}
 
+      {/* Venue list */}
       <ul className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
-        {sortedVenues.map((venue) => (
+        {venues.map((venue) => (
           <VenueCard key={venue.id} venue={venue} />
         ))}
       </ul>
 
-      <div className="flex justify-center my-6 gap-4">
-        <button
-          onClick={() => setPage((p) => Math.max(1, p - 1))}
-          disabled={page === 1}
-          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-        >
-          Previous
-        </button>
-        <span className="px-4 py-2">Page {page}</span>
-        <button
-          onClick={() => setPage((p) => p + 1)}
-          className="px-4 py-2 bg-gray-200 rounded"
-        >
-          Next
-        </button>
-      </div>
+      {/* Pagination only for normal (non-search) list */}
+      {meta && (
+        <div className="flex justify-center my-6 gap-4">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={meta.isFirstPage}
+            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
+
+          <span className="px-4 py-2">
+            Page {meta.currentPage} of {meta.pageCount}
+          </span>
+
+          <button
+            onClick={() => setPage((p) => p + 1)}
+            disabled={meta.isLastPage}
+            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }

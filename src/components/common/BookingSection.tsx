@@ -97,7 +97,7 @@ export function BookingSection({ venue }: BookingSectionProps) {
             disabledDates={disabledDates}
             onChange={(range) => {
               setSelectedRange(range);
-              setError(null); // clear previous errors on change
+              setError(null);
             }}
           />
           <GuestInput
@@ -105,7 +105,7 @@ export function BookingSection({ venue }: BookingSectionProps) {
             maxGuests={venue.maxGuests}
             onChange={(g) => {
               setGuests(g);
-              setError(null); // clear error when guest changes
+              setError(null);
             }}
           />
         </div>
@@ -139,7 +139,6 @@ export function BookingSection({ venue }: BookingSectionProps) {
                 ) * venue.price}
               </p>
 
-              {/* Error displayed inside modal */}
               {error && <p className="text-red-500 font-semibold">{error}</p>}
 
               <div className="flex justify-between mt-4">

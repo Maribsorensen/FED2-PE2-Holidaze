@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import type { TVenue } from '../../types/venue';
+import type { TPaginationMeta, TVenue } from '../../types/venue';
 import { getVenues, searchVenues } from './services';
 import { safeAsync } from '../../lib/safeAsync';
 
@@ -36,21 +36,30 @@ export function useSearchVenues(query: string, limit = 50, page = 1) {
   return { venues, loading, error };
 }
 
-export function useVenues(limit = 50, page = 1) {
+export function useVenues(
+  limit = 50,
+  page = 1,
+  sort: 'created' | 'name' = 'created',
+  sortOrder: 'asc' | 'desc' = 'desc'
+) {
   const [venues, setVenues] = useState<TVenue[]>([]);
+  const [meta, setMeta] = useState<TPaginationMeta | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setLoading(true);
     safeAsync(
-      () => getVenues(limit, page),
+      () => getVenues(limit, page, sort, sortOrder),
       () => setError('Failed to fetch venues')
-    ).then((data) => {
-      if (data) setVenues(data);
+    ).then((response) => {
+      if (response) {
+        setVenues(response.data);
+        setMeta(response.meta);
+      }
       setLoading(false);
     });
-  }, [limit, page]);
+  }, [limit, page, sort, sortOrder]);
 
-  return { venues, loading, error };
+  return { venues, meta, loading, error };
 }

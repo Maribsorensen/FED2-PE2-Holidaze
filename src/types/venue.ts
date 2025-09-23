@@ -29,10 +29,22 @@ export type TVenue = {
     name: string;
     email: string;
     bio: string;
-    avatar: {
-      url: string;
-      alt: string;
-    };
+    avatar: { url: string; alt: string };
   };
   bookings?: TBookings[];
+};
+
+export type TPaginationMeta = {
+  isFirstPage: boolean;
+  isLastPage: boolean;
+  currentPage: number;
+  previousPage: number | null;
+  nextPage: number | null;
+  pageCount: number;
+  totalCount: number;
+};
+
+export type TPaginatedVenues = {
+  data: TVenue[];
+  meta: TPaginationMeta;
 };

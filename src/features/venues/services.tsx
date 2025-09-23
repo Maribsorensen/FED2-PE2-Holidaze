@@ -1,16 +1,15 @@
 import { fetchApi } from '../../lib/api';
-import type { TVenue } from '../../types/venue';
+import type { TPaginatedVenues, TVenue } from '../../types/venue';
 
 export async function getVenues(
   limit = 40,
   page = 1,
   sort = 'created',
   sortOrder: 'asc' | 'desc' = 'desc'
-): Promise<TVenue[]> {
-  const response = await fetchApi<{ data: TVenue[] }>(
+): Promise<TPaginatedVenues> {
+  return fetchApi<TPaginatedVenues>(
     `/holidaze/venues?limit=${limit}&page=${page}&sort=${sort}&sortOrder=${sortOrder}`
   );
-  return response.data;
 }
 
 export async function getSingleVenue(id: string): Promise<TVenue> {
