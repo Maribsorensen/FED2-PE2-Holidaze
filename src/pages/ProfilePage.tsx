@@ -9,6 +9,7 @@ import { createVenue } from '../features/venues/services';
 import VenueForm from '../components/common/VenueForm';
 import { Venues } from '../components/common/ProfileVenues';
 import { safeAsync } from '../lib/safeAsync';
+import { SkeletonProfile } from '../components/common/LoadingSkeleton';
 
 export function ProfilePage() {
   const [user, setUser] = useState<TUser | null>(null);
@@ -66,7 +67,7 @@ export function ProfilePage() {
     setIsVenueModalOpen(false);
   };
 
-  if (loading) return <p>Loading profile...</p>;
+  if (loading) return <SkeletonProfile />;
   if (!user) return <p>{error || 'Profile not found'}</p>;
 
   return (

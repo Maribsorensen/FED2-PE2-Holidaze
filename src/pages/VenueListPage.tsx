@@ -2,11 +2,10 @@ import { VenueCard } from '../components/common/VenueCard';
 import { SearchBar } from '../components/common/SearchBar';
 import { useEffect, useState } from 'react';
 import { useSearchVenues, useVenues } from '../features/venues/useVenues';
+import { SkeletonCardGrid } from '../components/common/LoadingSkeleton';
 
 function useDebouncedValue<T>(value: T, delay = 500): T {
   const [debouncedValue, setDebouncedValue] = useState(value);
-
-  // Keep original useEffect-based debounce
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedValue(value), delay);
     return () => clearTimeout(handler);
@@ -24,20 +23,12 @@ export function VenueListPage() {
   );
 
   const PAGE_SIZE = 50;
-
-  // Determine API sort parameters
   const sortField = sortOption === 'newest' ? 'created' : 'name';
   const sortOrder = sortOption === 'newest' ? 'desc' : 'asc';
-
-  // Normal venues, server-side sorted
   const venuesData = useVenues(PAGE_SIZE, page, sortField, sortOrder);
-
-  // Search venues (unchanged, works as before)
   const searchData = useSearchVenues(debouncedSearch, PAGE_SIZE, page);
-
-  // Determine which data to use
   const venues = debouncedSearch ? searchData.venues : venuesData.venues;
-  const meta = debouncedSearch ? undefined : venuesData.meta; // Only normal list has pagination
+  const meta = debouncedSearch ? undefined : venuesData.meta;
   const loading = debouncedSearch ? searchData.loading : venuesData.loading;
   const error = debouncedSearch ? searchData.error : venuesData.error;
 
@@ -63,7 +54,7 @@ export function VenueListPage() {
       </div>
 
       {/* Loading / error */}
-      {loading && <p>Loading venues...</p>}
+      {loading && <SkeletonCardGrid count={8} />}
       {error && <p>Error: {error}</p>}
 
       {/* Venue list */}

@@ -3,6 +3,7 @@ import type { TBookings } from '../../types/bookings';
 import { getBookingsForUser } from '../../features/bookings/services';
 import { BookingCard } from './BookingCard';
 import { safeAsync } from '../../lib/safeAsync';
+import { SkeletonCardGrid } from './LoadingSkeleton';
 
 type BookingsProps = {
   userName: string;
@@ -25,7 +26,7 @@ export function Bookings({ userName }: BookingsProps) {
     loadBookings();
   }, [userName]);
 
-  if (loading) return <p>Loading bookings...</p>;
+  if (loading) return <SkeletonCardGrid count={6} />;
   if (error) return <p>{error}</p>;
   if (!bookings.length) return <p>You have no bookings yet.</p>;
 

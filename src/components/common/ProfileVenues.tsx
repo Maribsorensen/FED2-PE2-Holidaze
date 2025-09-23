@@ -9,6 +9,7 @@ import { VenueCard } from './VenueCard';
 import Modal from './Modal';
 import VenueForm from './VenueForm';
 import { safeAsync } from '../../lib/safeAsync';
+import { SkeletonCardGrid } from './LoadingSkeleton';
 
 type VenuesProps = {
   userName: string;
@@ -56,13 +57,12 @@ export function Venues({ userName }: VenuesProps) {
     setIsEditOpen(true);
   }
 
-  if (loading) return <p>Loading venues...</p>;
+  if (loading) return <SkeletonCardGrid count={6} />;
   if (error) return <p>{error}</p>;
   if (!venues.length) return <p>You have not created any venues yet.</p>;
 
   return (
     <>
-      {/* Venue List */}
       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {venues.map((venue) => (
           <VenueCard
