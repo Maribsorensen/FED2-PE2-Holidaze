@@ -1,19 +1,25 @@
-import { useState } from "react";
-import type { TVenue } from "../../types/venue";
+import { useState } from 'react';
+import type { TVenue } from '../../types/venue';
+import HolidazeLogo from '../../assets/holidaze-logo.png';
 
-type venueImages = {
-    venue: TVenue;
+type VenueImagesProps = {
+  venue: TVenue;
 };
 
-export function VenueGallery ({ venue }: venueImages) {
-    const images = Array.isArray(venue.media) ? venue.media : [venue.media];
-    const [selectedImage, setSelectedImage] = useState(images[0]);
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+export function VenueGallery({ venue }: VenueImagesProps) {
+  const images =
+    Array.isArray(venue.media) && venue.media.length > 0
+      ? venue.media
+      : [{ url: HolidazeLogo, alt: venue.name }];
+
+  const [selectedImage, setSelectedImage] = useState(images[0]);
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
       <div className="md:col-span-2">
         <img
           src={selectedImage.url}
-          alt={selectedImage.alt || "Venue image"}
+          alt={selectedImage.alt || 'Venue image'}
           className="w-full h-[400px] object-cover transition-all"
         />
       </div>
@@ -29,5 +35,5 @@ export function VenueGallery ({ venue }: venueImages) {
         ))}
       </div>
     </div>
-    )
+  );
 }

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import type { TVenue } from '../../types/venue';
 import { FaMapMarkerAlt } from 'react-icons/fa';
+import HolidazeLogo from '../../assets/Holidaze-logo.png';
 
 type VenueCardProps = {
   venue: TVenue;
@@ -12,7 +13,7 @@ export function VenueCard({ venue, actions }: VenueCardProps) {
     Array.isArray(venue.media) && venue.media.length > 0
       ? venue.media[0]
       : {
-          url: 'https://via.placeholder.com/400x300?text=No+Image',
+          url: HolidazeLogo,
           alt: venue.name,
         };
 
