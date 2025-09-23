@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '../components/common/Button';
 import { register } from '../features/auth/services';
 import { Link, useNavigate } from 'react-router-dom';
+import { safeAsync } from '../lib/safeAsync';
 
 export function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
@@ -19,19 +20,22 @@ export function RegisterPage() {
     const password = form.get('password') as string;
     const venueManager = form.get('venueManager') === 'on';
 
-    try {
-      await register(name, email, password, venueManager);
-      navigate('/');
-    } catch {
-      setError('Registration failed. Please check your credentials.');
-    }
+    const user = await safeAsync(
+      () => register(name, email, password, venueManager),
+      () => setError('Registration failed. Please check your credentials.')
+    );
+
+    if (user) navigate('/');
+    setLoading(false);
   }
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mx-auto mt-10">
       <form onSubmit={handleSubmit}>
         <h2 className="font-headings text-transform: uppercase text-2xl">
           Register your Holidaze account
         </h2>
+
         <label
           htmlFor="name"
           className="font-headings text-transform: uppercase"
@@ -39,6 +43,7 @@ export function RegisterPage() {
           Username
         </label>
         <input id="name" type="text" name="name" required />
+
         <label
           htmlFor="email"
           className="font-headings text-transform: uppercase"
@@ -46,6 +51,7 @@ export function RegisterPage() {
           Email
         </label>
         <input id="email" type="email" name="email" required />
+
         <label
           htmlFor="password"
           className="font-headings text-transform: uppercase"
@@ -53,14 +59,18 @@ export function RegisterPage() {
           Password
         </label>
         <input id="password" type="password" name="password" required />
+
         <label className="flex items-center gap-2">
           <input type="checkbox" name="venueManager" />
           Register as Venue Manager
         </label>
+
         <Button type="submit" disabled={loading}>
-          Register
+          {loading ? 'Registering...' : 'Register'}
         </Button>
+
         {error && <p className="text-cta">{error}</p>}
+
         <p className="font-headings text-transform: uppercase">
           Already have an account? Login{' '}
           <Link to="/login" className="text-cta">

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '../components/common/Button';
 import { login } from '../features/auth/services';
 import { Link, useNavigate } from 'react-router-dom';
+import { safeAsync } from '../lib/safeAsync';
 
 export function LoginPage() {
   const [error, setError] = useState<string | null>(null);
@@ -17,14 +18,13 @@ export function LoginPage() {
     const email = form.get('email') as string;
     const password = form.get('password') as string;
 
-    try {
-      await login(email, password);
-      navigate('/');
-    } catch {
-      setError('Login failed. Please check your credentials.');
-    } finally {
-      setLoading(false);
-    }
+    const result = await safeAsync(
+      () => login(email, password),
+      () => setError('Login failed. Please check your credentials.')
+    );
+
+    if (result) navigate('/');
+    setLoading(false);
   }
 
   return (
