@@ -8,32 +8,35 @@ import { Button } from '../components/common/Button';
 import { createVenue } from '../features/venues/services';
 import VenueForm from '../components/common/VenueForm';
 import { Venues } from '../components/common/ProfileVenues';
+import { safeAsync } from '../lib/safeAsync';
 
 export function ProfilePage() {
   const [user, setUser] = useState<TUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
-  const [isVenueModalOpen, setIsVenueModalOpen] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState('');
   const [avatarAlt, setAvatarAlt] = useState('');
+
+  const [isVenueModalOpen, setIsVenueModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'bookings' | 'venues'>('bookings');
 
   useEffect(() => {
     async function fetchProfile() {
       const name = localStorage.getItem('name');
       if (!name) {
-        console.error('No username found');
+        setError('No username found');
         setLoading(false);
         return;
       }
 
-      try {
-        const user = await getProfile(name);
-        setUser(user);
-      } catch (err) {
-        console.error('Failed to fetch profile', err);
-      } finally {
-        setLoading(false);
-      }
+      const fetchedUser = await safeAsync(
+        () => getProfile(name),
+        () => setError('Failed to fetch profile')
+      );
+      if (fetchedUser) setUser(fetchedUser);
+      setLoading(false);
     }
 
     fetchProfile();
@@ -41,39 +44,36 @@ export function ProfilePage() {
 
   const handleSaveAvatar = async () => {
     if (!user) return;
-    try {
-      const updatedUser = await updateAvatar(user.name, {
-        url: avatarUrl,
-        alt: avatarAlt,
-      });
+    const updatedUser = await safeAsync(
+      () => updateAvatar(user.name, { url: avatarUrl, alt: avatarAlt }),
+      () => setError('Failed to update avatar')
+    );
+    if (!updatedUser) return;
 
-      setUser(updatedUser);
-      setIsAvatarModalOpen(false);
-      setAvatarUrl('');
-      setAvatarAlt('');
-    } catch (err) {
-      console.error('Failed to update avatar', err);
-    }
+    setUser(updatedUser);
+    setIsAvatarModalOpen(false);
+    setAvatarUrl('');
+    setAvatarAlt('');
   };
-  type Tab = 'bookings' | 'venues';
-  const [activeTab, setActiveTab] = useState<Tab>('bookings');
+
   const handleCreateVenue = async (data: Partial<TUser>) => {
-    try {
-      await createVenue(data);
-      setIsVenueModalOpen(false);
-    } catch (err) {
-      console.error('Failed to create venue', err);
-    }
+    const created = await safeAsync(
+      () => createVenue(data),
+      () => setError('Failed to create venue')
+    );
+    if (!created) return;
+
+    setIsVenueModalOpen(false);
   };
 
   if (loading) return <p>Loading profile...</p>;
-  if (!user) return <p>Profile not found</p>;
+  if (!user) return <p>{error || 'Profile not found'}</p>;
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mx-auto mt-10">
       {/* Profile Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-center md:gap-6 mb-8">
-        <div className="flex flex-col items-center  text-center sm:text-left">
+        <div className="flex flex-col items-center text-center sm:text-left">
           <img
             src={user.avatar.url}
             alt={user.avatar.alt}
@@ -122,10 +122,7 @@ export function ProfilePage() {
       </div>
 
       {/* Content */}
-      {activeTab === 'bookings' && (
-        <div>{user && <Bookings userName={user.name} />}</div>
-      )}
-
+      {activeTab === 'bookings' && <Bookings userName={user.name} />}
       {activeTab === 'venues' && user.venueManager && (
         <div>
           <div className="flex justify-between items-center mb-4">
@@ -133,7 +130,7 @@ export function ProfilePage() {
               Create Venue
             </Button>
           </div>
-          {user && <Venues userName={user.name} />}
+          <Venues userName={user.name} />
         </div>
       )}
 

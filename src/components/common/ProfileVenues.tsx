@@ -8,6 +8,7 @@ import {
 import { VenueCard } from './VenueCard';
 import Modal from './Modal';
 import VenueForm from './VenueForm';
+import { safeAsync } from '../../lib/safeAsync';
 
 type VenuesProps = {
   userName: string;
@@ -16,6 +17,7 @@ type VenuesProps = {
 export function Venues({ userName }: VenuesProps) {
   const [venues, setVenues] = useState<TVenue[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editingVenue, setEditingVenue] = useState<TVenue | null>(null);
@@ -23,42 +25,39 @@ export function Venues({ userName }: VenuesProps) {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedVenue, setSelectedVenue] = useState<TVenue | null>(null);
 
-  // Load user venues
   useEffect(() => {
     async function loadVenues() {
-      try {
-        const venuesData = await getVenuesForUser(userName);
-        setVenues(venuesData);
-      } catch (err) {
-        console.error('Failed to fetch venues', err);
-      } finally {
-        setLoading(false);
-      }
+      const venuesData = await safeAsync(
+        () => getVenuesForUser(userName),
+        () => setError('Failed to fetch venues')
+      );
+      if (venuesData) setVenues(venuesData);
+      setLoading(false);
     }
     loadVenues();
   }, [userName]);
 
-  // Delete venue
   async function handleDeleteConfirm() {
     if (!selectedVenue) return;
-    try {
-      await deleteVenue(selectedVenue.id);
+    const deleted = await safeAsync(
+      () => deleteVenue(selectedVenue.id),
+      () => setError('Failed to delete venue')
+    );
+    if (deleted) {
       setVenues((prev) => prev.filter((v) => v.id !== selectedVenue.id));
-    } catch (err) {
-      console.error('Failed to delete venue', err);
-    } finally {
-      setSelectedVenue(null);
-      setIsDeleteOpen(false);
     }
+
+    setSelectedVenue(null);
+    setIsDeleteOpen(false);
   }
 
-  // Open edit modal
   function handleEdit(venue: TVenue) {
     setEditingVenue(venue);
     setIsEditOpen(true);
   }
 
   if (loading) return <p>Loading venues...</p>;
+  if (error) return <p>{error}</p>;
   if (!venues.length) return <p>You have not created any venues yet.</p>;
 
   return (
@@ -105,8 +104,13 @@ export function Venues({ userName }: VenuesProps) {
           <VenueForm
             initialData={editingVenue}
             onSubmit={async (data) => {
-              try {
-                await editVenue(editingVenue.id, data);
+              if (!editingVenue) return;
+
+              const updated = await safeAsync(
+                () => editVenue(editingVenue.id, data),
+                () => setError('Failed to update venue')
+              );
+              if (updated) {
                 setVenues((prev) =>
                   prev.map((v) =>
                     v.id === editingVenue.id ? { ...v, ...data } : v
@@ -114,8 +118,6 @@ export function Venues({ userName }: VenuesProps) {
                 );
                 setIsEditOpen(false);
                 setEditingVenue(null);
-              } catch (err) {
-                console.error('Failed to update venue', err);
               }
             }}
           />

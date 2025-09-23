@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { TBookings } from '../../types/bookings';
 import { getBookingsForUser } from '../../features/bookings/services';
 import { BookingCard } from './BookingCard';
+import { safeAsync } from '../../lib/safeAsync';
 
 type BookingsProps = {
   userName: string;
@@ -10,22 +11,22 @@ type BookingsProps = {
 export function Bookings({ userName }: BookingsProps) {
   const [bookings, setBookings] = useState<TBookings[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadBookings() {
-      try {
-        const bookingsData = await getBookingsForUser(userName);
-        setBookings(bookingsData);
-      } catch (err) {
-        console.error('Failed to fetch bookings', err);
-      } finally {
-        setLoading(false);
-      }
+      const bookingsData = await safeAsync(
+        () => getBookingsForUser(userName),
+        () => setError('Failed to fetch bookings')
+      );
+      if (bookingsData) setBookings(bookingsData);
+      setLoading(false);
     }
     loadBookings();
   }, [userName]);
 
   if (loading) return <p>Loading bookings...</p>;
+  if (error) return <p>{error}</p>;
   if (!bookings.length) return <p>You have no bookings yet.</p>;
 
   const now = new Date();

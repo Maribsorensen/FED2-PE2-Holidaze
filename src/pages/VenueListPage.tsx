@@ -8,7 +8,7 @@ function useDebouncedValue<T>(value: T, delay: number = 300): T {
 
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedValue(value), delay);
-    return () => clearTimeout(handler); // cancel timeout if value changes
+    return () => clearTimeout(handler);
   }, [value, delay]);
 
   return debouncedValue;
@@ -17,7 +17,7 @@ function useDebouncedValue<T>(value: T, delay: number = 300): T {
 export function VenueListPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const debouncedSearch = useDebouncedValue(search, 300); // update after 300ms of no typing
+  const debouncedSearch = useDebouncedValue(search, 500);
   const [sortOption, setSortOption] = useState<'newest' | 'alphabetical'>(
     'newest'
   );
