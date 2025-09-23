@@ -3,30 +3,36 @@ import { useParams } from 'react-router-dom';
 import type { TVenue } from '../types/venue';
 import { VenueGallery } from '../components/common/VenueGallery';
 import { BookingSection } from '../components/common/BookingSection';
+import { getSingleVenue } from '../features/venues/services';
+import { safeAsync } from '../lib/safeAsync';
 
 export function VenuePage() {
   const { id } = useParams<{ id: string }>();
   const [venue, setVenue] = useState<TVenue | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchVenue() {
-      try {
-        const res = await fetch(
-          `https://v2.api.noroff.dev/holidaze/venues/${id}?_bookings=true`
-        );
-
-        const json = await res.json();
-        setVenue(json.data);
-      } catch (error) {
-        console.error('Error fetching venue:', error);
-      }
+    if (!id) {
+      setError('No venue ID provided');
+      setLoading(false);
+      return;
     }
-    fetchVenue();
+
+    setLoading(true);
+    safeAsync(
+      () => getSingleVenue(id),
+      () => setError('Failed to fetch venue')
+    )
+      .then((data) => {
+        if (data) setVenue(data);
+      })
+      .finally(() => setLoading(false));
   }, [id]);
 
-  if (!venue) {
-    return <p>Cannot find venue...</p>;
-  }
+  if (loading) return <p>Loading venue...</p>;
+  if (error) return <p className="text-cta">{error}</p>;
+  if (!venue) return <p>Cannot find venue...</p>;
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mx-auto mt-10">

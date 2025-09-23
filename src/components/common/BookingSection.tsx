@@ -6,6 +6,7 @@ import { GuestInput } from './GuestInput';
 import { BookingSummary } from './BookingSummary';
 import Modal from './Modal';
 import { useNavigate } from 'react-router-dom';
+import { safeAsync } from '../../lib/safeAsync';
 
 interface BookingSectionProps {
   venue: TVenue;
@@ -16,6 +17,8 @@ export function BookingSection({ venue }: BookingSectionProps) {
   const [guests, setGuests] = useState<number>(1);
   const [modalOpen, setModalOpen] = useState(false);
   const [toast, setToast] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const disabledDates: Date[] =
@@ -30,26 +33,36 @@ export function BookingSection({ venue }: BookingSectionProps) {
     }) || [];
 
   const handleConfirmBooking = async () => {
-    if (!selectedRange || selectedRange.length !== 2) return;
-    if (guests < 1 || guests > venue.maxGuests)
-      return alert('Invalid number of guests');
+    setError(null);
 
-    try {
-      await createBooking({
-        dateFrom: selectedRange[0].toISOString(),
-        dateTo: selectedRange[1].toISOString(),
-        guests,
-        venueId: venue.id,
-      });
-
-      setToast(true);
-      setModalOpen(false);
-
-      setTimeout(() => setToast(false), 5000);
-    } catch (err) {
-      console.error(err);
-      alert('Booking failed. Please try again.');
+    if (!selectedRange || selectedRange.length !== 2) {
+      setError('Please select a valid date range.');
+      return;
     }
+    if (guests < 1 || guests > venue.maxGuests) {
+      setError(`Number of guests must be between 1 and ${venue.maxGuests}.`);
+      return;
+    }
+
+    setLoading(true);
+    await safeAsync(
+      () =>
+        createBooking({
+          dateFrom: selectedRange[0].toISOString(),
+          dateTo: selectedRange[1].toISOString(),
+          guests,
+          venueId: venue.id,
+        }),
+      () => setError('Booking failed. Please try again.')
+    )
+      .then((res) => {
+        if (res) {
+          setToast(true);
+          setModalOpen(false);
+          setTimeout(() => setToast(false), 5000);
+        }
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -65,29 +78,38 @@ export function BookingSection({ venue }: BookingSectionProps) {
           </button>
         </div>
       )}
+
       <style>{`
-      @keyframes fade {
-        0% { opacity: 0; }
-        10% { opacity: 1; }
-        90% { opacity: 1; }
-        100% { opacity: 0; }
-      }
-      .animate-fade {
-        animation: fade 3s forwards;
-      }
-    `}</style>
+        @keyframes fade {
+          0% { opacity: 0; }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { opacity: 0; }
+        }
+        .animate-fade {
+          animation: fade 3s forwards;
+        }
+      `}</style>
+
       <div className="grid grid-cols-1 md:grid-cols-[4fr_2fr] gap-5 mt-6">
         <div>
           <BookingCalendar
             disabledDates={disabledDates}
-            onChange={setSelectedRange}
+            onChange={(range) => {
+              setSelectedRange(range);
+              setError(null); // clear previous errors on change
+            }}
           />
           <GuestInput
             guests={guests}
             maxGuests={venue.maxGuests}
-            onChange={setGuests}
+            onChange={(g) => {
+              setGuests(g);
+              setError(null); // clear error when guest changes
+            }}
           />
         </div>
+
         <div>
           <BookingSummary
             selectedRange={selectedRange}
@@ -116,6 +138,10 @@ export function BookingSection({ venue }: BookingSectionProps) {
                     (1000 * 60 * 60 * 24)
                 ) * venue.price}
               </p>
+
+              {/* Error displayed inside modal */}
+              {error && <p className="text-red-500 font-semibold">{error}</p>}
+
               <div className="flex justify-between mt-4">
                 <button
                   onClick={() => setModalOpen(false)}
@@ -126,8 +152,9 @@ export function BookingSection({ venue }: BookingSectionProps) {
                 <button
                   onClick={handleConfirmBooking}
                   className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
+                  disabled={loading}
                 >
-                  Confirm Booking
+                  {loading ? 'Booking...' : 'Confirm Booking'}
                 </button>
               </div>
             </div>

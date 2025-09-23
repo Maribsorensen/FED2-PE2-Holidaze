@@ -13,6 +13,13 @@ export async function getVenues(
   return response.data;
 }
 
+export async function getSingleVenue(id: string): Promise<TVenue> {
+  const response = await fetchApi<{ data: TVenue }>(
+    `/holidaze/venues/${id}?_bookings=true`
+  );
+  return response.data;
+}
+
 export async function searchVenues(
   query: string,
   limit = 50,
