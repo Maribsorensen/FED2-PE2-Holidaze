@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Button } from '../components/common/Button';
 import { login } from '../features/auth/services';
+import { Link, useNavigate } from 'react-router-dom';
 
 export function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -16,10 +18,8 @@ export function LoginPage() {
     const password = form.get('password') as string;
 
     try {
-      const { user } = await login(email, password);
-      console.log('Logged in user:', user);
-
-      window.location.href = '/';
+      await login(email, password);
+      navigate('/');
     } catch {
       setError('Login failed. Please check your credentials.');
     } finally {
@@ -58,9 +58,9 @@ export function LoginPage() {
 
         <p className="font-headings text-transform: uppercase">
           Don't have an account? Register{' '}
-          <a href="/register" className="text-cta">
+          <Link to="/register" className="text-cta">
             here
-          </a>
+          </Link>
         </p>
       </form>
     </div>

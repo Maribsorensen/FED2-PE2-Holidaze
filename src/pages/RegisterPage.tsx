@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Button } from '../components/common/Button';
 import { register } from '../features/auth/services';
+import { Link, useNavigate } from 'react-router-dom';
 
 export function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -18,10 +20,8 @@ export function RegisterPage() {
     const venueManager = form.get('venueManager') === 'on';
 
     try {
-      const user = await register(name, email, password, venueManager);
-      console.log('Registered user:', user);
-
-      window.location.href = '/';
+      await register(name, email, password, venueManager);
+      navigate('/');
     } catch {
       setError('Registration failed. Please check your credentials.');
     }
@@ -63,9 +63,9 @@ export function RegisterPage() {
         {error && <p className="text-cta">{error}</p>}
         <p className="font-headings text-transform: uppercase">
           Already have an account? Login{' '}
-          <a href="/login" className="text-cta">
+          <Link to="/login" className="text-cta">
             here
-          </a>
+          </Link>
         </p>
       </form>
     </div>
