@@ -22,7 +22,6 @@ export function VenueListPage() {
     'newest'
   );
 
-  // Always call hooks in same order
   const venuesData = useVenues(50, page);
   const searchData = useSearchVenues(debouncedSearch, 50, page);
 
