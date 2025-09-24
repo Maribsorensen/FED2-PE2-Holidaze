@@ -68,28 +68,37 @@ export function Header() {
 
           {!token && dropdownOpen && (
             <ul className="absolute right-0 mt-2 bg-white text-primary rounded shadow-lg flex flex-col min-w-[120px] z-50">
-              <li
-                className="px-4 py-2 hover:bg-gray-200"
-                onClick={() => setDropdownOpen(false)}
-              >
-                <NavLink to="/login">Login</NavLink>
+              <li>
+                <NavLink
+                  className="block px-4 py-2 hover:bg-gray-200"
+                  onClick={() => setDropdownOpen(false)}
+                  to="/login"
+                >
+                  Login
+                </NavLink>
               </li>
-              <li
-                className="px-4 py-2 hover:bg-gray-200"
-                onClick={() => setDropdownOpen(false)}
-              >
-                <NavLink to="/register">Register</NavLink>
+              <li>
+                <NavLink
+                  className="block px-4 py-2 hover:bg-gray-200"
+                  onClick={() => setDropdownOpen(false)}
+                  to="/register"
+                >
+                  Register
+                </NavLink>
               </li>
             </ul>
           )}
 
           {token && dropdownOpen && (
-            <ul className="absolute right-0 mt-2 bg-white text-primary rounded shadow-lg flex flex-col min-w-[120px]">
-              <li
-                className="px-4 py-2 hover:bg-gray-200"
-                onClick={() => setDropdownOpen(false)}
-              >
-                <NavLink to="/profile">Profile</NavLink>
+            <ul className="absolute right-0 mt-2 bg-white text-primary rounded shadow-lg flex flex-col text-center min-w-[120px] z-50">
+              <li>
+                <NavLink
+                  to="/profile"
+                  className="block w-full px-4 py-2 hover:bg-gray-200"
+                  onClick={() => setDropdownOpen(false)}
+                >
+                  Profile
+                </NavLink>
               </li>
               <li
                 className="px-4 py-2 hover:bg-gray-200 cursor-pointer"

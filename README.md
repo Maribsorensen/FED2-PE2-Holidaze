@@ -1,69 +1,108 @@
-# React + TypeScript + Vite
+# Holidaze - Accommodation Booking Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Project Overview
 
-Currently, two official plugins are available:
+Holidaze is a modern accommodation booking platform built to showcase front-end development skills. Users can browse venues, make bookings, and manage their profiles. Venue managers can register, manage venues, and view bookings.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project demonstrates skills in **React**, **TypeScript**, **Tailwind CSS**, and deployment on **Netlify**.
 
-## Expanding the ESLint configuration
+## Table of Contents
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- [Project Goal](#project-goal)
+- [Technologies Used](#technologies-used)
+- [User Roles & Features](#user-roles--features)
+- [Setup & Installation](#setup--installation)
+- [Design & Prototyping](#design--prototyping)
+- [Testing & Validation](#testing--validation)
+- [Deployment](#deployment)
+- [Future Improvements](#future-improvements)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Project Goal
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+The goal of this project is to demonstrate general development capabilities, technical skills, and visual design expertise through a fully functional front-end application.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Technologies Used
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**Programming Languages:**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- TypeScript
+- JavaScript (Vanilla)
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+**Frameworks & Libraries:**
+
+- React (v18)
+- Tailwind CSS (v3)
+
+**Design & Prototyping:**
+
+- Figma
+
+**Hosting:**
+
+- Netlify
+
+**Planning & Version Control:**
+
+- GitHub
+- Trello / GitHub Projects
+
+## User Roles & Features
+
+**Visitor (Not logged in):**
+
+- View a list of venues
+- Search for a specific venue
+- View a venue page by ID
+- Register as a Customer or Venue Manager (with stud.noroff.no email)
+- View a calendar with available and booked dates
+
+**Customer:**
+
+- Log in and log out
+- Create a booking
+- View upcoming bookings
+- Update avatar/profile picture
+
+**Venue Manager:**
+
+- Log in and log out
+- Create, edit, and delete venues
+- View upcoming bookings for managed venues
+- Update avatar/profile picture
+
+## Setup & Installation
+
+**Prerequisites:**
+
+- Node.js (v18 or later recommended)
+- npm or yarn
+
+**Steps:**
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Maribsorensen/FED2-PE2-Holidaze.git
+   ```
+2. Install dependencies
+
+````bash
+npm install
+3. Start the development server
+```bash
+npm run dev
+
+## Design & Prototyping
+- Style Guide: Created in Figma including logo, fonts, color palette, and components
+- Prototypes: Desktop and mobile versions created in Figma
+
+## Testing & Validation
+- Manual testing for all user stories
+- Validated with:
+- HTML Validator
+- Lighthouse (performance, accessibility, SEO)
+- WAVE (accessibility)
+
+## Deployment
+This project is deployed on Netlify
+https://pe2-holidaze-maribs.netlify.app/
+````
