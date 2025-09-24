@@ -27,40 +27,60 @@ export function LoginPage() {
     if (result) navigate('/');
     setLoading(false);
   }
+
   usePageMeta();
+
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mx-auto mt-10">
-      <form onSubmit={handleSubmit}>
-        <h2 className="font-headings text-transform: uppercase text-2xl">
+    <div className="min-h-[80vh] flex items-center justify-center bg-background px-4">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 flex flex-col gap-6"
+      >
+        <h2 className="font-headings uppercase text-2xl text-center">
           Log into your Holidaze account
         </h2>
 
-        <label
-          htmlFor="email"
-          className="font-headings text-transform: uppercase"
-        >
-          Email
-        </label>
-        <input id="email" type="email" name="email" required />
+        {/* Error message above the form */}
+        {error && <p className="text-cta text-center mt-2">{error}</p>}
 
-        <label
-          htmlFor="password"
-          className="font-headings text-transform: uppercase"
-        >
-          Password
-        </label>
-        <input id="password" type="password" name="password" required />
+        <div className="flex flex-col gap-2 mb-4">
+          <label htmlFor="email" className="font-headings uppercase text-sm">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            required
+            pattern="^[a-zA-Z0-9._%+-]+@stud\.noroff\.no$"
+            title="Email must be a valid stud.noroff.no address."
+            className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <div className="flex flex-col gap-2 mb-4">
+          <label htmlFor="password" className="font-headings uppercase text-sm">
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            required
+            minLength={8}
+            title="Password must be at least 8 characters."
+            className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
 
         <Button type="submit" disabled={loading}>
           {loading ? 'Logging in...' : 'Login'}
         </Button>
 
-        {error && <p className="text-cta">{error}</p>}
-
-        <p className="font-headings text-transform: uppercase">
-          Don't have an account? Register{' '}
-          <Link to="/register" className="text-cta">
-            here
+        <p className="text-center font-headings uppercase text-sm">
+          Don't have an account?{' '}
+          <Link to="/register" className="text-cta underline">
+            Register here
           </Link>
         </p>
       </form>
