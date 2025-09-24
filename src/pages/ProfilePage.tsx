@@ -11,6 +11,7 @@ import { Venues } from '../components/profile/ProfileVenues';
 import { safeAsync } from '../lib/safeAsync';
 import { SkeletonProfile } from '../components/common/LoadingSkeleton';
 import toast from 'react-hot-toast';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 export function ProfilePage() {
   const [user, setUser] = useState<TUser | null>(null);
@@ -23,7 +24,7 @@ export function ProfilePage() {
 
   const [isVenueModalOpen, setIsVenueModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'bookings' | 'venues'>('bookings');
-
+  usePageMeta();
   useEffect(() => {
     async function fetchProfile() {
       const name = localStorage.getItem('name');

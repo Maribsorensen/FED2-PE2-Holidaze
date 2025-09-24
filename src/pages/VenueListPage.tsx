@@ -3,6 +3,7 @@ import { SearchBar } from '../components/common/SearchBar';
 import { useEffect, useState } from 'react';
 import { useSearchVenues, useVenues } from '../features/venues/useVenues';
 import { SkeletonCardGrid } from '../components/common/LoadingSkeleton';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 function useDebouncedValue<T>(value: T, delay = 500): T {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -31,7 +32,7 @@ export function VenueListPage() {
   const meta = debouncedSearch ? undefined : venuesData.meta;
   const loading = debouncedSearch ? searchData.loading : venuesData.loading;
   const error = debouncedSearch ? searchData.error : venuesData.error;
-
+  usePageMeta();
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mx-auto mt-10">
       <h1 className="font-headings uppercase text-3xl md:text-4xl text-center mb-8">

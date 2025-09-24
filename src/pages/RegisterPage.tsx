@@ -3,6 +3,7 @@ import { Button } from '../components/common/Button';
 import { register } from '../features/auth/services';
 import { Link, useNavigate } from 'react-router-dom';
 import { safeAsync } from '../lib/safeAsync';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 export function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +29,7 @@ export function RegisterPage() {
     if (user) navigate('/');
     setLoading(false);
   }
-
+  usePageMeta();
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mx-auto mt-10">
       <form onSubmit={handleSubmit}>

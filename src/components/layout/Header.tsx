@@ -67,7 +67,7 @@ export function Header() {
           />
 
           {!token && dropdownOpen && (
-            <ul className="absolute right-0 mt-2 bg-white text-primary rounded shadow-lg flex flex-col min-w-[120px]">
+            <ul className="absolute right-0 mt-2 bg-white text-primary rounded shadow-lg flex flex-col min-w-[120px] z-50">
               <li
                 className="px-4 py-2 hover:bg-gray-200"
                 onClick={() => setDropdownOpen(false)}

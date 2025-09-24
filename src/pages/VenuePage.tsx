@@ -6,13 +6,17 @@ import { BookingSection } from '../components/booking/BookingSection';
 import { getSingleVenue } from '../features/venues/services';
 import { safeAsync } from '../lib/safeAsync';
 import { SkeletonVenuePage } from '../components/common/LoadingSkeleton';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 export function VenuePage() {
   const { id } = useParams<{ id: string }>();
   const [venue, setVenue] = useState<TVenue | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  usePageMeta({
+    title: venue ? `${venue.name} - Holidaze` : 'Loading...',
+    description: venue ? `Details and bookings for ${venue.name}` : undefined,
+  });
   useEffect(() => {
     if (!id) {
       setError('No venue ID provided');

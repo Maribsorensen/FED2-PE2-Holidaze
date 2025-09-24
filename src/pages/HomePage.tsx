@@ -3,6 +3,7 @@ import { HomeHero } from '../components/common/HomeHero';
 import type { TVenue } from '../types/venue';
 import { getVenues } from '../features/venues/services';
 import { VenueCard } from '../components/venue/VenueCard';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 export function HomePage() {
   const [venues, setVenues] = useState<TVenue[]>([]);
@@ -13,7 +14,7 @@ export function HomePage() {
       .then((data) => setVenues(data.data))
       .finally(() => setLoading(false));
   }, []);
-
+  usePageMeta();
   return (
     <div>
       <HomeHero />
