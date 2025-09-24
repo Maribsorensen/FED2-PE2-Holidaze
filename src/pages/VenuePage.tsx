@@ -5,6 +5,7 @@ import { VenueGallery } from '../components/venue/VenueGallery';
 import { BookingSection } from '../components/booking/BookingSection';
 import { getSingleVenue } from '../features/venues/services';
 import { safeAsync } from '../lib/safeAsync';
+import { SkeletonVenuePage } from '../components/common/LoadingSkeleton';
 
 export function VenuePage() {
   const { id } = useParams<{ id: string }>();
@@ -30,52 +31,69 @@ export function VenuePage() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <p>Loading venue...</p>;
-  if (error) return <p className="text-cta">{error}</p>;
-  if (!venue) return <p>Cannot find venue...</p>;
+  if (loading) return <SkeletonVenuePage />;
+  if (error)
+    return (
+      <p className="text-cta text-center font-body text-lg py-10">{error}</p>
+    );
+  if (!venue)
+    return (
+      <p className="text-gray-600 text-center font-body text-lg py-10">
+        Cannot find venue...
+      </p>
+    );
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mx-auto mt-10">
-      <h1 className="font-headings uppercase text-xl text-center m-4">
+      <h1 className="font-headings uppercase text-4xl md:text-5xl text-center mb-8">
         {venue.name}
       </h1>
+
+      {/* Gallery */}
       <VenueGallery venue={venue} />
-      <div className="grid grid-cols-1 md:grid-cols-[4fr_2fr] gap-5">
-        <div className="flex flex-col">
-          <h2 className="font-headings uppercase">Description</h2>
-          <p className="font-body">{venue.description}</p>
-        </div>
+
+      {/* Description & Specs */}
+      <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-10 mt-10">
+        {/* Description */}
         <div>
-          <h2 className="font-headings uppercase">Specifications</h2>
-          <ul className="font-body space-y-2">
-            <li className="flex justify-between border-b border-gray-300 pb-1">
-              <span>Guests:</span>
-              <span>{venue.maxGuests}</span>
-            </li>
-            <li className="flex justify-between border-b border-gray-300 pb-1">
-              <span>Price per night:</span>
-              <span>{venue.price} $</span>
-            </li>
-            <li className="flex justify-between border-b border-gray-300 pb-1">
-              <span>Pets:</span>
-              <span>{venue.meta.pets ? 'Yes' : 'No'}</span>
-            </li>
-            <li className="flex justify-between border-b border-gray-300 pb-1">
-              <span>Wifi:</span>
-              <span>{venue.meta.wifi ? 'Yes' : 'No'}</span>
-            </li>
-            <li className="flex justify-between border-b border-gray-300 pb-1">
-              <span>Breakfast:</span>
-              <span>{venue.meta.breakfast ? 'Yes' : 'No'}</span>
-            </li>
-            <li className="flex justify-between pb-1">
-              <span>Parking:</span>
-              <span>{venue.meta.parking ? 'Yes' : 'No'}</span>
-            </li>
+          <h2 className="font-headings uppercase text-2xl mb-4">Description</h2>
+          <p className="font-body text-gray-700 leading-relaxed">
+            {venue.description}
+          </p>
+        </div>
+
+        {/* Specifications */}
+        <div>
+          <h2 className="font-headings uppercase text-2xl mb-4">
+            Specifications
+          </h2>
+          <ul className="font-body text-gray-700 border border-gray-200 rounded overflow-hidden">
+            {[
+              ['Guests', venue.maxGuests],
+              ['Price per night', `${venue.price} $`],
+              ['Pets', venue.meta.pets ? 'Yes' : 'No'],
+              ['Wifi', venue.meta.wifi ? 'Yes' : 'No'],
+              ['Breakfast', venue.meta.breakfast ? 'Yes' : 'No'],
+              ['Parking', venue.meta.parking ? 'Yes' : 'No'],
+            ].map(([label, value], index) => (
+              <li
+                key={label}
+                className={`flex justify-between px-4 py-2 ${
+                  index % 2 === 0 ? 'bg-gray-50' : ''
+                } border-b border-gray-200`}
+              >
+                <span className="font-semibold">{label}:</span>
+                <span>{value}</span>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
-      <BookingSection venue={venue} />
+
+      {/* Booking Section */}
+      <div className="mt-12">
+        <BookingSection venue={venue} />
+      </div>
     </div>
   );
 }

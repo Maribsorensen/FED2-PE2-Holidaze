@@ -53,7 +53,8 @@ export default function VenueForm({
       <textarea
         placeholder="Description"
         {...register('description', { required: 'Description is required' })}
-        className="border rounded-lg p-2"
+        rows={4}
+        className="border rounded-lg p-2 resize-y min-h-[100px]"
       />
       {errors.description && (
         <p className="text-red-500">{errors.description.message}</p>

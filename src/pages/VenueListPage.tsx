@@ -34,55 +34,66 @@ export function VenueListPage() {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mx-auto mt-10">
-      <h1 className="font-headings uppercase text-xl text-center m-4">
+      <h1 className="font-headings uppercase text-3xl md:text-4xl text-center mb-8">
         Venues
       </h1>
 
-      {/* Search and sorting */}
-      <div className="flex flex-col sm:flex-row justify-center gap-4 m-4">
-        <SearchBar value={search} onChange={setSearch} />
+      {/* Search and Sorting */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+        <div className="flex-1">
+          <SearchBar value={search} onChange={setSearch} />
+        </div>
         <select
           value={sortOption}
           onChange={(e) =>
             setSortOption(e.target.value as 'newest' | 'alphabetical')
           }
-          className="border p-2 rounded"
+          className="border border-gray-300 p-2 rounded shadow-sm"
         >
           <option value="newest">Newest</option>
           <option value="alphabetical">Alphabetical</option>
         </select>
       </div>
 
-      {/* Loading / error */}
+      {/* Loading / Error */}
       {loading && <SkeletonCardGrid count={8} />}
-      {error && <p>Error: {error}</p>}
+      {error && (
+        <p className="text-cta text-center font-body text-lg my-8">
+          Error: {error}
+        </p>
+      )}
 
-      {/* Venue list */}
-      <ul className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
-        {venues.map((venue) => (
-          <VenueCard key={venue.id} venue={venue} />
-        ))}
-      </ul>
+      {/* Venue List */}
+      {!loading && venues.length > 0 && (
+        <ul className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {venues.map((venue) => (
+            <VenueCard key={venue.id} venue={venue} />
+          ))}
+        </ul>
+      )}
+      {!loading && venues.length === 0 && (
+        <p className="text-gray-600 text-center mt-8">No venues found.</p>
+      )}
 
-      {/* Pagination only for normal (non-search) list */}
+      {/* Pagination */}
       {meta && (
-        <div className="flex justify-center my-6 gap-4">
+        <div className="flex justify-center items-center gap-4 mt-12">
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={meta.isFirstPage}
-            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+            className="px-4 py-2 bg-primary text-white font-semibold rounded hover:bg-primary/80 disabled:opacity-50"
           >
             Previous
           </button>
 
-          <span className="px-4 py-2">
+          <span className="px-4 py-2 text-gray-700 font-medium">
             Page {meta.currentPage} of {meta.pageCount}
           </span>
 
           <button
             onClick={() => setPage((p) => p + 1)}
             disabled={meta.isLastPage}
-            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+            className="px-4 py-2 bg-primary text-white font-semibold rounded hover:bg-primary/80 disabled:opacity-50"
           >
             Next
           </button>
