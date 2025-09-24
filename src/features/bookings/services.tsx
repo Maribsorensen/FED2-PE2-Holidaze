@@ -23,3 +23,36 @@ export async function createBooking(
   });
   return response;
 }
+
+export async function deleteBooking(id: string): Promise<void> {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('No access token found');
+
+  await fetchApi<void>(`/holidaze/bookings/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+export async function updateBooking(
+  id: string,
+  data: Partial<Pick<TBookings, 'dateFrom' | 'dateTo' | 'guests'>>
+): Promise<{ data: TBookings }> {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('No access token found');
+
+  const response = await fetchApi<{ data: TBookings }>(
+    `/holidaze/bookings/${id}`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    }
+  );
+  return response;
+}

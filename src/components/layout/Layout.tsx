@@ -1,3 +1,4 @@
+import { AppToaster } from '../common/Toaster';
 import { Footer } from './Footer';
 import { Header } from './Header';
 import { Outlet } from 'react-router-dom';
@@ -9,6 +10,7 @@ export function Layout() {
       <main className="max-w-screen-xl mx-auto w-full px-4">
         <Outlet />
       </main>
+      <AppToaster />
       <Footer />
     </div>
   );

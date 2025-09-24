@@ -1,12 +1,19 @@
 import { format } from 'date-fns';
 import type { TBookings } from '../../types/bookings';
 import { VenueCard } from './VenueCard';
+import { BookingActionsMenu } from './BookingsActionMenu';
 
 interface BookingCardProps {
   booking: TBookings;
+  onUpdateBooking: () => void;
+  onDeleteBooking: () => void;
 }
 
-export function BookingCard({ booking }: BookingCardProps) {
+export function BookingCard({
+  booking,
+  onUpdateBooking,
+  onDeleteBooking,
+}: BookingCardProps) {
   const { venue, dateFrom, dateTo, guests } = booking;
 
   return (
@@ -22,6 +29,11 @@ export function BookingCard({ booking }: BookingCardProps) {
               {format(new Date(dateFrom), 'MMM d')} -{' '}
               {format(new Date(dateTo), 'MMM d')}
             </span>
+
+            <BookingActionsMenu
+              onUpdate={onUpdateBooking}
+              onDelete={onDeleteBooking}
+            />
           </div>
         }
       />

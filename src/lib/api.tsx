@@ -22,5 +22,9 @@ export async function fetchApi<T>(
     throw new Error(errorText || 'API request failed');
   }
 
+  if (response.status === 204) {
+    return undefined as unknown as T;
+  }
+
   return response.json();
 }

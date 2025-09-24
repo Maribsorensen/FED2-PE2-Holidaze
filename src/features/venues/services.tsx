@@ -36,7 +36,7 @@ export async function createVenue(data: Partial<TVenue>): Promise<TVenue> {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('No access token found');
 
-  const response = await fetchApi<TVenue>(`/holidaze/venues`, {
+  const response = await fetchApi<{ data: TVenue }>(`/holidaze/venues`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export async function createVenue(data: Partial<TVenue>): Promise<TVenue> {
     body: JSON.stringify(data),
   });
 
-  return response;
+  return response.data; // <- unwrap
 }
 
 export async function getVenuesForUser(name: string): Promise<TVenue[]> {

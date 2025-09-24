@@ -10,6 +10,7 @@ import VenueForm from '../components/common/VenueForm';
 import { Venues } from '../components/common/ProfileVenues';
 import { safeAsync } from '../lib/safeAsync';
 import { SkeletonProfile } from '../components/common/LoadingSkeleton';
+import toast from 'react-hot-toast';
 
 export function ProfilePage() {
   const [user, setUser] = useState<TUser | null>(null);
@@ -63,6 +64,15 @@ export function ProfilePage() {
       () => setError('Failed to create venue')
     );
     if (!created) return;
+    toast.custom((t) => (
+      <div
+        className={`${
+          t.visible ? 'animate-fade-in' : 'animate-fade-out'
+        } bg-cta text-white px-6 py-3 rounded shadow-lg z-50`}
+      >
+        Venue "{created.name}" created successfully
+      </div>
+    ));
 
     setIsVenueModalOpen(false);
   };

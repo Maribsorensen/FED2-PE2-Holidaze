@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { FaUser } from 'react-icons/fa6';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { clearToken, getToken } from '../../lib/auth';
+import toast from 'react-hot-toast';
 
 export function Header() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [toast, setToast] = useState(false);
   const navigate = useNavigate();
   const token = getToken();
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -13,16 +13,17 @@ export function Header() {
   const handleLogout = () => {
     clearToken();
     setDropdownOpen(false);
-    setToast(true);
+    toast.custom((t) => (
+      <div
+        className={`${
+          t.visible ? 'animate-fade-in' : 'animate-fade-out'
+        } fixed top-1 right-6 bg-cta text-white px-4 py-2 rounded shadow-lg`}
+      >
+        Logged out successfully
+      </div>
+    ));
     navigate('/login');
   };
-
-  useEffect(() => {
-    if (toast) {
-      const timer = setTimeout(() => setToast(false), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [toast]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -100,22 +101,6 @@ export function Header() {
           )}
         </div>
       </nav>
-      {toast && (
-        <div className="fixed top-4 right-4 bg-cta text-white px-4 py-2 rounded shadow-lg animate-fade">
-          Logged out successfully
-        </div>
-      )}
-      <style>{`
-        @keyframes fade {
-          0% { opacity: 0; }
-          10% { opacity: 1; }
-          90% { opacity: 1; }
-          100% { opacity: 0; }
-        }
-        .animate-fade {
-          animation: fade 3s forwards;
-        }
-      `}</style>
     </header>
   );
 }

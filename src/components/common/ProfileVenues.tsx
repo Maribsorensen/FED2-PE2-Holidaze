@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { TVenue } from '../../types/venue';
 import {
+  createVenue,
   deleteVenue,
   editVenue,
   getVenuesForUser,
@@ -10,6 +11,8 @@ import Modal from './Modal';
 import VenueForm from './VenueForm';
 import { safeAsync } from '../../lib/safeAsync';
 import { SkeletonCardGrid } from './LoadingSkeleton';
+import toast from 'react-hot-toast';
+import { FaEllipsisV } from 'react-icons/fa';
 
 type VenuesProps = {
   userName: string;
@@ -19,6 +22,7 @@ export function Venues({ userName }: VenuesProps) {
   const [venues, setVenues] = useState<TVenue[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [openVenueId, setOpenVenueId] = useState<string | null>(null);
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editingVenue, setEditingVenue] = useState<TVenue | null>(null);
@@ -28,34 +32,97 @@ export function Venues({ userName }: VenuesProps) {
 
   useEffect(() => {
     async function loadVenues() {
-      const venuesData = await safeAsync(
+      const data = await safeAsync(
         () => getVenuesForUser(userName),
         () => setError('Failed to fetch venues')
       );
-      if (venuesData) setVenues(venuesData);
+      if (data) setVenues(data);
       setLoading(false);
     }
     loadVenues();
   }, [userName]);
 
-  async function handleDeleteConfirm() {
+  const handleDeleteConfirm = async () => {
     if (!selectedVenue) return;
-    const deleted = await safeAsync(
-      () => deleteVenue(selectedVenue.id),
-      () => setError('Failed to delete venue')
-    );
-    if (deleted) {
-      setVenues((prev) => prev.filter((v) => v.id !== selectedVenue.id));
+
+    const venueToDelete = selectedVenue;
+    try {
+      await deleteVenue(venueToDelete.id);
+      setVenues((prev) => prev.filter((v) => v.id !== venueToDelete.id));
+      toast.custom((t) => (
+        <div
+          className={`${
+            t.visible ? 'animate-fade-in' : 'animate-fade-out'
+          } bg-cta text-white px-6 py-3 rounded shadow-lg z-50`}
+        >
+          Venue "{venueToDelete.name}" deleted successfully
+        </div>
+      ));
+    } catch (err) {
+      toast.error('Failed to delete venue');
+      console.error(err);
+    } finally {
+      setSelectedVenue(null);
+      setIsDeleteOpen(false);
     }
+  };
 
-    setSelectedVenue(null);
-    setIsDeleteOpen(false);
-  }
+  const handleSaveEdit = async (data: Partial<TVenue>) => {
+    if (!editingVenue) return;
 
-  function handleEdit(venue: TVenue) {
+    if (editingVenue.id) {
+      const updated = await safeAsync(
+        () => editVenue(editingVenue.id, data),
+        () => toast.error('Failed to update venue')
+      );
+
+      if (updated) {
+        setVenues((prev) =>
+          prev.map((v) => (v.id === editingVenue.id ? { ...v, ...data } : v))
+        );
+
+        toast.custom((t) => (
+          <div
+            className={`${
+              t.visible ? 'animate-fade-in' : 'animate-fade-out'
+            } bg-cta text-white px-6 py-3 rounded shadow-lg z-50`}
+          >
+            Venue updated successfully
+          </div>
+        ));
+
+        setIsEditOpen(false);
+        setEditingVenue(null);
+      }
+    } else {
+      const created = await safeAsync(
+        () => createVenue(data),
+        () => toast.error('Failed to create venue')
+      );
+
+      if (created) {
+        setVenues((prev) => [...prev, created]);
+
+        toast.custom((t) => (
+          <div
+            className={`${
+              t.visible ? 'animate-fade-in' : 'animate-fade-out'
+            } bg-cta text-white px-6 py-3 rounded shadow-lg z-50`}
+          >
+            Venue created successfully
+          </div>
+        ));
+
+        setIsEditOpen(false);
+        setEditingVenue(null);
+      }
+    }
+  };
+
+  const handleEdit = (venue: TVenue) => {
     setEditingVenue(venue);
     setIsEditOpen(true);
-  }
+  };
 
   if (loading) return <SkeletonCardGrid count={6} />;
   if (error) return <p>{error}</p>;
@@ -69,29 +136,48 @@ export function Venues({ userName }: VenuesProps) {
             key={venue.id}
             venue={venue}
             actions={
-              <>
+              <div className="relative inline-block text-right">
                 <button
-                  onClick={() => handleEdit(venue)}
-                  className="bg-black text-white px-2 py-1 rounded-md text-xs shadow"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => {
-                    setSelectedVenue(venue);
-                    setIsDeleteOpen(true);
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // toggle open menu for this venue
+                    setOpenVenueId(openVenueId === venue.id ? null : venue.id);
                   }}
-                  className="bg-black text-white px-2 py-1 rounded-md text-xs shadow"
+                  className="p-1 bg-white/80 rounded-full hover:bg-white"
                 >
-                  Delete
+                  <FaEllipsisV />
                 </button>
-              </>
+
+                {openVenueId === venue.id && (
+                  <div className="absolute right-0 mt-2 w-28 bg-white shadow-lg rounded-md z-10">
+                    <button
+                      className="w-full px-3 py-2 text-left hover:bg-gray-100"
+                      onClick={() => {
+                        handleEdit(venue);
+                        setOpenVenueId(null);
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="w-full px-3 py-2 text-left text-red-600 hover:bg-gray-100"
+                      onClick={() => {
+                        setSelectedVenue(venue);
+                        setIsDeleteOpen(true);
+                        setOpenVenueId(null);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </div>
             }
           />
         ))}
       </ul>
 
-      {/* Edit Venue Modal */}
+      {/* Create/Edit Venue Modal */}
       <Modal
         isOpen={isEditOpen}
         onClose={() => {
@@ -99,29 +185,13 @@ export function Venues({ userName }: VenuesProps) {
           setEditingVenue(null);
         }}
       >
-        <h2 className="text-lg font-semibold mb-4">Edit Venue</h2>
-        {editingVenue && (
-          <VenueForm
-            initialData={editingVenue}
-            onSubmit={async (data) => {
-              if (!editingVenue) return;
-
-              const updated = await safeAsync(
-                () => editVenue(editingVenue.id, data),
-                () => setError('Failed to update venue')
-              );
-              if (updated) {
-                setVenues((prev) =>
-                  prev.map((v) =>
-                    v.id === editingVenue.id ? { ...v, ...data } : v
-                  )
-                );
-                setIsEditOpen(false);
-                setEditingVenue(null);
-              }
-            }}
-          />
-        )}
+        <h2 className="text-lg font-semibold mb-4">
+          {editingVenue && editingVenue.id ? 'Edit Venue' : 'Create Venue'}
+        </h2>
+        <VenueForm
+          initialData={editingVenue || undefined}
+          onSubmit={handleSaveEdit}
+        />
       </Modal>
 
       {/* Delete Venue Modal */}

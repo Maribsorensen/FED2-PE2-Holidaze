@@ -7,6 +7,7 @@ import { BookingSummary } from './BookingSummary';
 import Modal from './Modal';
 import { useNavigate } from 'react-router-dom';
 import { safeAsync } from '../../lib/safeAsync';
+import toast from 'react-hot-toast';
 
 interface BookingSectionProps {
   venue: TVenue;
@@ -16,7 +17,6 @@ export function BookingSection({ venue }: BookingSectionProps) {
   const [selectedRange, setSelectedRange] = useState<Date[] | null>(null);
   const [guests, setGuests] = useState<number>(1);
   const [modalOpen, setModalOpen] = useState(false);
-  const [toast, setToast] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -57,9 +57,22 @@ export function BookingSection({ venue }: BookingSectionProps) {
     )
       .then((res) => {
         if (res) {
-          setToast(true);
+          toast.custom((t) => (
+            <div
+              className={`${
+                t.visible ? 'animate-fade-in' : 'animate-fade-out'
+              } bg-cta text-white px-6 py-3 rounded shadow-lg z-50`}
+            >
+              Booking confirmed!
+              <button
+                className="underline ml-2 cursor-pointer"
+                onClick={() => navigate('/profile')}
+              >
+                View Booking
+              </button>
+            </div>
+          ));
           setModalOpen(false);
-          setTimeout(() => setToast(false), 5000);
         }
       })
       .finally(() => setLoading(false));
@@ -67,30 +80,6 @@ export function BookingSection({ venue }: BookingSectionProps) {
 
   return (
     <div className="relative">
-      {toast && (
-        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-cta text-white px-6 py-3 rounded shadow-lg animate-fade z-50">
-          Booking confirmed!{' '}
-          <button
-            className="underline ml-2 cursor-pointer"
-            onClick={() => navigate('/profile')}
-          >
-            View Booking
-          </button>
-        </div>
-      )}
-
-      <style>{`
-        @keyframes fade {
-          0% { opacity: 0; }
-          10% { opacity: 1; }
-          90% { opacity: 1; }
-          100% { opacity: 0; }
-        }
-        .animate-fade {
-          animation: fade 3s forwards;
-        }
-      `}</style>
-
       <div className="grid grid-cols-1 md:grid-cols-[4fr_2fr] gap-5 mt-6">
         <div>
           <BookingCalendar
