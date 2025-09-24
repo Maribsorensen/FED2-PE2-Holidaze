@@ -40,6 +40,14 @@ export function Venues({ userName }: VenuesProps) {
       setLoading(false);
     }
     loadVenues();
+
+    const handleVenueCreated = (e: Event) => {
+      const customEvent = e as CustomEvent<TVenue>;
+      setVenues((prev) => [...prev, customEvent.detail]);
+    };
+
+    window.addEventListener('venueCreated', handleVenueCreated);
+    return () => window.removeEventListener('venueCreated', handleVenueCreated);
   }, [userName]);
 
   const handleDeleteConfirm = async () => {
@@ -102,17 +110,6 @@ export function Venues({ userName }: VenuesProps) {
 
       if (created) {
         setVenues((prev) => [...prev, created]);
-
-        toast.custom((t) => (
-          <div
-            className={`${
-              t.visible ? 'animate-fade-in' : 'animate-fade-out'
-            } bg-cta text-white px-6 py-3 rounded shadow-lg z-50`}
-          >
-            Venue created successfully
-          </div>
-        ));
-
         setIsEditOpen(false);
         setEditingVenue(null);
       }

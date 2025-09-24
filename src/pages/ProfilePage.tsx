@@ -64,6 +64,7 @@ export function ProfilePage() {
       () => setError('Failed to create venue')
     );
     if (!created) return;
+
     toast.custom((t) => (
       <div
         className={`${
@@ -73,6 +74,7 @@ export function ProfilePage() {
         Venue "{created.name}" created successfully
       </div>
     ));
+    window.dispatchEvent(new CustomEvent('venueCreated', { detail: created }));
 
     setIsVenueModalOpen(false);
   };
@@ -144,7 +146,6 @@ export function ProfilePage() {
           <Venues userName={user.name} />
         </div>
       )}
-
       {/* Avatar Modal */}
       <Modal
         isOpen={isAvatarModalOpen}
