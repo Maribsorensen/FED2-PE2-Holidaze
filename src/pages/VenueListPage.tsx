@@ -1,4 +1,4 @@
-import { VenueCard } from '../components/common/VenueCard';
+import { VenueCard } from '../components/venue/VenueCard';
 import { SearchBar } from '../components/common/SearchBar';
 import { useEffect, useState } from 'react';
 import { useSearchVenues, useVenues } from '../features/venues/useVenues';

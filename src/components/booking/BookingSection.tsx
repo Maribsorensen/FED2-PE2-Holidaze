@@ -4,7 +4,7 @@ import { createBooking } from '../../features/bookings/services';
 import { BookingCalendar } from './BookingCalendar';
 import { GuestInput } from './GuestInput';
 import { BookingSummary } from './BookingSummary';
-import Modal from './Modal';
+import Modal from '../common/Modal';
 import { useNavigate } from 'react-router-dom';
 import { safeAsync } from '../../lib/safeAsync';
 import toast from 'react-hot-toast';

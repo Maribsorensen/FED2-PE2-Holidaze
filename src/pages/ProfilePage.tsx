@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Bookings } from '../components/common/ProfileBookings';
+import { Bookings } from '../components/profile/ProfileBookings';
 import { getProfile } from '../features/profile/services';
 import type { TUser } from '../types/user';
 import { updateAvatar } from '../features/profile/UpdateAvatar';
 import Modal from '../components/common/Modal';
 import { Button } from '../components/common/Button';
 import { createVenue } from '../features/venues/services';
-import VenueForm from '../components/common/VenueForm';
-import { Venues } from '../components/common/ProfileVenues';
+import VenueForm from '../components/venue/VenueForm';
+import { Venues } from '../components/profile/ProfileVenues';
 import { safeAsync } from '../lib/safeAsync';
 import { SkeletonProfile } from '../components/common/LoadingSkeleton';
 import toast from 'react-hot-toast';

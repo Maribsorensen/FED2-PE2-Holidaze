@@ -1,6 +1,6 @@
 import { useFieldArray, useForm } from 'react-hook-form';
 import type { TVenue } from '../../types/venue';
-import { Button } from './Button';
+import { Button } from '../common/Button';
 
 type TVenueFormData = Omit<TVenue, 'media'> & {
   media: { url: string; alt: string }[];

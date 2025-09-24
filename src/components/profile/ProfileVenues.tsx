@@ -6,11 +6,11 @@ import {
   editVenue,
   getVenuesForUser,
 } from '../../features/venues/services';
-import { VenueCard } from './VenueCard';
-import Modal from './Modal';
-import VenueForm from './VenueForm';
+import { VenueCard } from '../venue/VenueCard';
+import Modal from '../common/Modal';
+import VenueForm from '../venue/VenueForm';
 import { safeAsync } from '../../lib/safeAsync';
-import { SkeletonCardGrid } from './LoadingSkeleton';
+import { SkeletonCardGrid } from '../common/LoadingSkeleton';
 import toast from 'react-hot-toast';
 import { FaEllipsisV } from 'react-icons/fa';
 

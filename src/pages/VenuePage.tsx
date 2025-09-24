@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import type { TVenue } from '../types/venue';
-import { VenueGallery } from '../components/common/VenueGallery';
-import { BookingSection } from '../components/common/BookingSection';
+import { VenueGallery } from '../components/venue/VenueGallery';
+import { BookingSection } from '../components/booking/BookingSection';
 import { getSingleVenue } from '../features/venues/services';
 import { safeAsync } from '../lib/safeAsync';
 

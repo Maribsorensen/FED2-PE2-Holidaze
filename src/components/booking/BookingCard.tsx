@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import type { TBookings } from '../../types/bookings';
-import { VenueCard } from './VenueCard';
+import { VenueCard } from '../venue/VenueCard';
 import { BookingActionsMenu } from './BookingsActionMenu';
 
 interface BookingCardProps {

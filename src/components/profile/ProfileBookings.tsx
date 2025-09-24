@@ -5,10 +5,10 @@ import {
   getBookingsForUser,
   updateBooking,
 } from '../../features/bookings/services';
-import { BookingCard } from './BookingCard';
+import { BookingCard } from '../booking/BookingCard';
 import { safeAsync } from '../../lib/safeAsync';
-import { SkeletonCardGrid } from './LoadingSkeleton';
-import Modal from './Modal';
+import { SkeletonCardGrid } from '../common/LoadingSkeleton';
+import Modal from '../common/Modal';
 import toast from 'react-hot-toast';
 
 export function Bookings({ userName }: { userName: string }) {
