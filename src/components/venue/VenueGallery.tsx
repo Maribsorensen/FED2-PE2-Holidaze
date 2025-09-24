@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { TVenue } from '../../types/venue';
-import HolidazeLogo from '../../assets/holidaze-logo.png';
+import HolidazeLogo from '../../assets/Holidaze-logo.png';
 
 type VenueImagesProps = {
   venue: TVenue;
