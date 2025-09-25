@@ -5,6 +5,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { safeAsync } from '../lib/safeAsync';
 import { usePageMeta } from '../hooks/usePageMeta';
 
+/**
+ * Login page component.
+ *
+ * Renders a login form for existing users.
+ * Validates that the email ends with @stud.noroff.no.
+ * Handles asynchronous login and displays an error message if login fails.
+ *
+ * @returns {JSX.Element} The rendered login page component.
+ */
+
 export function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);

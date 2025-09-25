@@ -8,6 +8,21 @@ import { safeAsync } from '../lib/safeAsync';
 import { SkeletonVenuePage } from '../components/common/LoadingSkeleton';
 import { usePageMeta } from '../hooks/usePageMeta';
 
+/**
+ * Venue page component.
+ *
+ * Displays detailed information about a specific venue, including:
+ *  - Gallery of images
+ *  - Description
+ *  - Specifications (guests, price, amenities)
+ *  - Booking section
+ *
+ * Fetches venue data asynchronously based on the `id` URL parameter.
+ * Handles loading and error states and displays fallback messages if the venue is not found.
+ *
+ * @returns {JSX.Element} The rendered venue page component.
+ */
+
 export function VenuePage() {
   const { id } = useParams<{ id: string }>();
   const [venue, setVenue] = useState<TVenue | null>(null);

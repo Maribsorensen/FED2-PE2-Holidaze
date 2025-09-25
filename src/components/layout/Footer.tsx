@@ -1,5 +1,21 @@
 import { FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa6';
 
+/**
+ * Footer component that renders the bottom section of the application.
+ *
+ * Features:
+ * - Displays the application name "Holidaze" with the current year.
+ * - Includes social media icons linking to Facebook, Instagram, and Twitter.
+ * - Responsive layout using flexbox for proper alignment on different screen sizes.
+ * - Provides hover effects on social media icons for better user interaction.
+ *
+ * @component
+ * @example
+ * <Footer />
+ *
+ * @returns {JSX.Element} The Footer component.
+ */
+
 export function Footer() {
   return (
     <footer className="bg-primary text-white font-body py-6">

@@ -5,6 +5,16 @@ import { getVenues } from '../features/venues/services';
 import { VenueCard } from '../components/venue/VenueCard';
 import { usePageMeta } from '../hooks/usePageMeta';
 
+/**
+ * Home page component.
+ *
+ * Displays a hero section and a list of featured venues.
+ * Fetches a limited number of venues from the API and shows a loading state while fetching.
+ * Fetch 4 latest venues on component mount
+ *
+ * @returns {JSX.Element} The rendered home page component.
+ */
+
 export function HomePage() {
   const [venues, setVenues] = useState<TVenue[]>([]);
   const [loading, setLoading] = useState(true);

@@ -1,5 +1,22 @@
 import { ToastBar, Toaster, ToastIcon } from 'react-hot-toast';
 
+/**
+ * AppToaster component that provides a global notification system using `react-hot-toast`.
+ *
+ * Features:
+ * - Positioned at the top-center of the viewport.
+ * - Custom toast appearance with a fade-in and fade-out animation.
+ * - Toasts include an icon and message.
+ * - Toasts automatically disappear after 3 seconds.
+ * - Uses a CSS keyframe animation for smooth fade effect.
+ *
+ * @component
+ * @example
+ * <AppToaster />
+ *
+ * @returns {JSX.Element} The AppToaster component for displaying global notifications.
+ */
+
 export function AppToaster() {
   return (
     <>

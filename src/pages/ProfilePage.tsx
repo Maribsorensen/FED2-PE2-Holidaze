@@ -14,6 +14,25 @@ import toast from 'react-hot-toast';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { ManagerBookings } from '../components/profile/ProfileManagerBookings';
 
+/**
+ * Profile page component.
+ *
+ * Displays user profile information, including avatar, name, and email.
+ * Shows different tabs for:
+ *  - User's bookings
+ *  - User's venues (if they are a venue manager)
+ *  - Bookings for user's managed venues (if applicable)
+ *
+ * Users can:
+ *  - Update their avatar
+ *  - Create new venues (venue managers only)
+ *
+ * Handles async API calls for fetching profile data, updating avatars, and creating venues.
+ * Displays loading state and errors when relevant.
+ *
+ * @returns {JSX.Element} The rendered profile page component.
+ */
+
 export function ProfilePage() {
   const [user, setUser] = useState<TUser | null>(null);
   const [loading, setLoading] = useState(true);

@@ -2,6 +2,20 @@ import { useState } from 'react';
 import type { TVenue } from '../../types/venue';
 import HolidazeLogo from '../../assets/Holidaze-logo.png';
 
+/**
+ * VenueGallery component displays a gallery of images for a venue.
+ *
+ * If the venue has media images, it displays them with a main selected image
+ * and smaller thumbnails. Hovering over a thumbnail updates the main image.
+ * If no media images are provided, a default placeholder image is shown.
+ *
+ * @param {Object} props - Component props.
+ * @param {TVenue} props.venue - The venue object containing media information and name.
+ *
+ * @example
+ * <VenueGallery venue={venue} />
+ */
+
 type VenueImagesProps = {
   venue: TVenue;
 };

@@ -5,6 +5,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { safeAsync } from '../lib/safeAsync';
 import { usePageMeta } from '../hooks/usePageMeta';
 
+/**
+ * Registration page component.
+ *
+ * Renders a registration form for creating a new account.
+ * Validates that the email ends with @stud.noroff.no.
+ * Provides an option to register as a venue manager.
+ *
+ * @returns {JSX.Element} The registration form component.
+ */
+
 export function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);

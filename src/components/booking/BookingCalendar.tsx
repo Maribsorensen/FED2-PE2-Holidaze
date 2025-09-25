@@ -1,6 +1,27 @@
 import Calendar from 'react-calendar';
 import './calendar-custom.css';
 
+/**
+ * BookingCalendar component renders a calendar for selecting a date range for bookings.
+ *
+ * Features:
+ * - Allows users to select a single date or a range of dates.
+ * - Disables dates that are already booked.
+ * - Calls the `onChange` callback whenever the selected date range changes.
+ *
+ * @param {Object} props - Component props.
+ * @param {Date[]} [props.disabledDates] - Optional array of dates to disable (already booked dates).
+ * @param {(range: Date[] | null) => void} props.onChange - Callback function called with the selected date range or null.
+ *
+ * @example
+ * <BookingCalendar
+ *   disabledDates={[new Date('2025-10-10'), new Date('2025-10-11')]}
+ *   onChange={(range) => console.log(range)}
+ * />
+ *
+ * @returns {JSX.Element} The rendered booking calendar component.
+ */
+
 interface BookingCalendarProps {
   disabledDates?: Date[];
   onChange: (range: Date[] | null) => void;

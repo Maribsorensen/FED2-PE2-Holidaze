@@ -1,6 +1,28 @@
 import type { ReactNode } from 'react';
 import ReactModal from 'react-modal';
 
+/**
+ * Modal component that renders a dialog using `react-modal`.
+ *
+ * Features:
+ * - Controlled visibility with the `isOpen` prop.
+ * - Calls `onClose` callback when the modal is requested to close.
+ * - Renders arbitrary content via `children`.
+ * - Custom styling for modal content and overlay with Tailwind CSS classes.
+ *
+ * @param {Object} props - Component props.
+ * @param {boolean} props.isOpen - Determines whether the modal is visible.
+ * @param {() => void} props.onClose - Callback invoked when the modal should close (e.g., overlay click or ESC key).
+ * @param {ReactNode} props.children - Content to render inside the modal.
+ *
+ * @example
+ * <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+ *   <div>Modal Content</div>
+ * </Modal>
+ *
+ * @returns {JSX.Element} The Modal component.
+ */
+
 type ModalProps = {
   isOpen: boolean;
   onClose: () => void;

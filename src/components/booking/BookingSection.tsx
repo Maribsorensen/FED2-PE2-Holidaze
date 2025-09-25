@@ -9,6 +9,25 @@ import { safeAsync } from '../../lib/safeAsync';
 import toast from 'react-hot-toast';
 import { Button } from '../common/Button';
 
+/**
+ * BookingSection component integrates the booking calendar and booking summary for a venue.
+ *
+ * Features:
+ * - Displays a calendar for selecting a date range, disabling already booked dates.
+ * - Shows a booking summary including selected dates, number of guests, and total price.
+ * - Handles booking confirmation with validation and error handling.
+ * - Prompts users to log in or register if they attempt to book without being authenticated.
+ * - Provides modals for booking confirmation and login/register prompts.
+ *
+ * @param {Object} props - Component props.
+ * @param {TVenue} props.venue - The venue details, including existing bookings, price, and max guests.
+ *
+ * @example
+ * <BookingSection venue={venueData} />
+ *
+ * @returns {JSX.Element} The rendered booking section component.
+ */
+
 interface BookingSectionProps {
   venue: TVenue;
 }

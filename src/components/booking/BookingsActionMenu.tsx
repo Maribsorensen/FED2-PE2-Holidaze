@@ -1,6 +1,27 @@
 import { useState } from 'react';
 import { FaEllipsisV } from 'react-icons/fa';
 
+/**
+ * BookingActionsMenu component provides a dropdown menu with actions to update or delete a booking.
+ *
+ * Features:
+ * - Displays a button with three vertical dots.
+ * - Toggles a dropdown menu with "Edit" and "Delete" options.
+ * - Calls the provided callback functions when the respective options are clicked.
+ *
+ * @param {Object} props - Component props.
+ * @param {() => void} props.onUpdate - Callback function triggered when the "Edit" option is clicked.
+ * @param {() => void} props.onDelete - Callback function triggered when the "Delete" option is clicked.
+ *
+ * @example
+ * <BookingActionsMenu
+ *   onUpdate={() => console.log('Edit clicked')}
+ *   onDelete={() => console.log('Delete clicked')}
+ * />
+ *
+ * @returns {JSX.Element} The rendered booking actions menu component.
+ */
+
 interface BookingActionsMenuProps {
   onUpdate: () => void;
   onDelete: () => void;

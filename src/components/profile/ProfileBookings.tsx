@@ -11,16 +11,39 @@ import { SkeletonCardGrid } from '../common/LoadingSkeleton';
 import Modal from '../common/Modal';
 import toast from 'react-hot-toast';
 
+/**
+ * Bookings component displays a list of bookings made by a specific user.
+ *
+ * Features:
+ * - Fetches bookings for the given `userName` on mount.
+ * - Displays a loading state while fetching bookings.
+ * - Shows an error message if fetching fails.
+ * - Displays a message if no bookings exist.
+ * - Separates bookings into:
+ *   - Upcoming bookings (`dateTo` >= today)
+ *   - Past bookings (`dateTo` < today)
+ * - Renders each booking using the `BookingCard` component.
+ * - Provides options to edit or delete each booking:
+ *   - Edit opens a modal to update `dateFrom`, `dateTo`, and `guests`.
+ *   - Delete opens a confirmation modal before removal.
+ * - Uses toast notifications for success/error feedback.
+ *
+ * Props:
+ * - `userName` (string): The username whose bookings should be fetched.
+ *
+ * @param {Object} props - Component props.
+ * @param {string} props.userName - The username to fetch bookings for.
+ *
+ * @example
+ * <Bookings userName="john_doe" />
+ */
+
 export function Bookings({ userName }: { userName: string }) {
   const [bookings, setBookings] = useState<TBookings[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // Edit modal
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editingBooking, setEditingBooking] = useState<TBookings | null>(null);
-
-  // Delete modal
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<TBookings | null>(
     null
@@ -38,7 +61,6 @@ export function Bookings({ userName }: { userName: string }) {
     loadBookings();
   }, [userName]);
 
-  /** Delete booking */
   const handleDeleteConfirm = async () => {
     if (!selectedBooking || !selectedBooking.id) return;
 
@@ -65,13 +87,11 @@ export function Bookings({ userName }: { userName: string }) {
     }
   };
 
-  /** Open edit modal */
   const handleEdit = (booking: TBookings) => {
     setEditingBooking(booking);
     setIsEditOpen(true);
   };
 
-  /** Save edit */
   const handleSaveEdit = async (updatedData: {
     dateFrom: string;
     dateTo: string;

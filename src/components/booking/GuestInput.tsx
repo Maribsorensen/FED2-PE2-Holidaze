@@ -1,3 +1,18 @@
+/**
+ * GuestInput Component
+ *
+ * A reusable input component for selecting the number of guests.
+ * Includes validation to ensure the number of guests does not exceed the maximum allowed.
+ *
+ * Props:
+ * - guests: Current number of guests.
+ * - maxGuests: Maximum number of guests allowed.
+ * - onChange: Function to handle changes to the number of guests.
+ * @param {Object} props - Component props.
+ * @param {number} props.guests - Current number of guests.
+ * @param {number} props.maxGuests - Maximum number of guests allowed.
+ */
+
 interface GuestInputProps {
   guests: number;
   maxGuests: number;

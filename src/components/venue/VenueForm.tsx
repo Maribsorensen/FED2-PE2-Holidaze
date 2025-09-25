@@ -2,6 +2,24 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import type { TVenue } from '../../types/venue';
 import { Button } from '../common/Button';
 
+/**
+ * VenueForm component for creating or editing a venue.
+ * Uses react-hook-form for managing form state, validation, and dynamic fields (media images).
+ *
+ * Features:
+ * - Inputs for venue name, description, price, max guests, and amenities (wifi, parking, pets, breakfast).
+ * - Dynamic media fields with at least one required image.
+ * - Location fields: address, city, country.
+ * - Validation errors displayed inline.
+ *
+ * @param {Object} props - Component props.
+ * @param {Partial<TVenueFormData>} [props.initialData] - Optional initial data to populate the form for editing.
+ * @param {(data: Partial<TVenueFormData>) => void} props.onSubmit - Callback function called with form data on submit.
+ *
+ * @example
+ * <VenueForm initialData={venue} onSubmit={handleVenueSubmit} />
+ */
+
 type TVenueFormData = Omit<TVenue, 'media'> & {
   media: { url: string; alt: string }[];
 };

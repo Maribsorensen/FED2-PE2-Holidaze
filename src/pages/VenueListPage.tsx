@@ -5,6 +5,15 @@ import { useSearchVenues, useVenues } from '../features/venues/useVenues';
 import { SkeletonCardGrid } from '../components/common/LoadingSkeleton';
 import { usePageMeta } from '../hooks/usePageMeta';
 
+/**
+ * Custom hook that debounces a value by a specified delay.
+ *
+ * @template T
+ * @param {T} value - The value to debounce.
+ * @param {number} [delay=500] - Delay in milliseconds before updating the debounced value.
+ * @returns {T} The debounced value.
+ */
+
 function useDebouncedValue<T>(value: T, delay = 500): T {
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
@@ -14,6 +23,16 @@ function useDebouncedValue<T>(value: T, delay = 500): T {
 
   return debouncedValue;
 }
+
+/**
+ * Venue list page component.
+ *
+ * Displays a searchable and sortable list of venues.
+ * Supports pagination, loading states, and error handling.
+ * Utilizes a debounced search input to avoid excessive API calls.
+ *
+ * @returns {JSX.Element} The rendered venue list page component.
+ */
 
 export function VenueListPage() {
   const [page, setPage] = useState(1);

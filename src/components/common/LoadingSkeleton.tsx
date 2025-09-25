@@ -1,6 +1,24 @@
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
+/**
+ * SkeletonBase component renders a customizable skeleton placeholder.
+ *
+ * Features:
+ * - Accepts height, width, className, borderRadius, and style props.
+ * - Wraps `react-loading-skeleton` for consistent skeleton styling.
+ *
+ * @param {Object} props - Component props.
+ * @param {number|string} [props.height] - Height of the skeleton.
+ * @param {number|string} [props.width] - Width of the skeleton.
+ * @param {string} [props.className] - Additional CSS classes.
+ * @param {number|string} [props.borderRadius] - Border radius of the skeleton.
+ * @param {React.CSSProperties} [props.style] - Inline styles.
+ *
+ * @example
+ * <SkeletonBase height={100} width={200} borderRadius={8} />
+ */
+
 interface SkeletonBaseProps {
   height?: number | string;
   width?: number | string;
@@ -27,6 +45,13 @@ export const SkeletonBase: React.FC<SkeletonBaseProps> = ({
   );
 };
 
+/**
+ * SkeletonCard component renders a skeleton placeholder for a card item.
+ *
+ * @example
+ * <SkeletonCard />
+ */
+
 export const SkeletonCard = () => (
   <li className="relative rounded-md overflow-hidden shadow-lg">
     <SkeletonBase height={256} width="100%" borderRadius={8} />
@@ -47,6 +72,16 @@ export const SkeletonCard = () => (
   </li>
 );
 
+/**
+ * SkeletonCardGrid component renders a grid of skeleton cards.
+ *
+ * @param {Object} props
+ * @param {number} [props.count=8] - Number of skeleton cards to render.
+ *
+ * @example
+ * <SkeletonCardGrid count={6} />
+ */
+
 export const SkeletonCardGrid = ({ count = 8 }) => (
   <ul className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
     {Array.from({ length: count }).map((_, idx) => (
@@ -54,6 +89,13 @@ export const SkeletonCardGrid = ({ count = 8 }) => (
     ))}
   </ul>
 );
+
+/**
+ * SkeletonProfile component renders a skeleton placeholder for a user profile page.
+ *
+ * @example
+ * <SkeletonProfile />
+ */
 
 export const SkeletonProfile: React.FC = () => {
   return (
@@ -91,6 +133,13 @@ export const SkeletonProfile: React.FC = () => {
     </div>
   );
 };
+
+/**
+ * SkeletonVenuePage component renders a skeleton placeholder for a venue details page.
+ *
+ * @example
+ * <SkeletonVenuePage />
+ */
 
 export const SkeletonVenuePage: React.FC = () => {
   const baseColor = '#cbd5e1';

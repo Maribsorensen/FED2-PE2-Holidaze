@@ -3,6 +3,23 @@ import type { TVenue } from '../../types/venue';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import HolidazeLogo from '../../assets/Holidaze-logo.png';
 
+/**
+ * VenueCard component displays a card view of a venue with image, name, location, and rating.
+ *
+ * Features:
+ * - Displays the first media image, or a default placeholder if none is available.
+ * - Shows venue name and location (city, country).
+ * - Displays the venue rating in the top-left corner.
+ * - Optional `actions` prop allows rendering action buttons (e.g., edit, delete) on the top-right corner.
+ *
+ * @param {Object} props - Component props.
+ * @param {TVenue} props.venue - The venue object containing details like `id`, `name`, `media`, `rating`, and `location`.
+ * @param {React.ReactNode} [props.actions] - Optional action buttons to display on the card.
+ *
+ * @example
+ * <VenueCard venue={venue} actions={<EditButton />} />
+ */
+
 type VenueCardProps = {
   venue: TVenue;
   actions?: React.ReactNode;

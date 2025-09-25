@@ -1,3 +1,21 @@
+/**
+ * SearchBar component renders a controlled text input for searching.
+ *
+ * Features:
+ * - Controlled input with `value` and `onChange` props.
+ * - Calls `onChange` callback whenever the input value changes.
+ * - Styled using Tailwind CSS for consistent appearance.
+ *
+ * @param {Object} props - Component props.
+ * @param {string} props.value - The current value of the input.
+ * @param {(newValue: string) => void} props.onChange - Callback function called when the input changes.
+ *
+ * @example
+ * <SearchBar value={searchQuery} onChange={setSearchQuery} />
+ *
+ * @returns {JSX.Element} The SearchBar component.
+ */
+
 type SearchBarProps = {
   value: string;
   onChange: (newValue: string) => void;

@@ -4,6 +4,26 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { clearToken, getToken } from '../../lib/auth';
 import toast from 'react-hot-toast';
 
+/**
+ * Header component that displays the top navigation bar and user options.
+ *
+ * Features:
+ * - Shows the application name "Holidaze" linking to the home page.
+ * - Navigation links to "Home" and "Venues".
+ * - User icon toggles a dropdown menu.
+ * - Dropdown menu changes based on authentication status:
+ *   - Not authenticated: shows "Login" and "Register".
+ *   - Authenticated: shows "Profile" and "Logout".
+ * - Clicking "Logout" clears the authentication token, shows a toast notification, and redirects to the login page.
+ * - Dropdown closes when clicking outside of it.
+ *
+ * @component
+ * @example
+ * <Header />
+ *
+ * @returns {JSX.Element} The Header component.
+ */
+
 export function Header() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();

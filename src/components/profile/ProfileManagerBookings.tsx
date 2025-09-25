@@ -4,6 +4,31 @@ import type { TBookings } from '../../types/bookings';
 import { safeAsync } from '../../lib/safeAsync';
 import { getBookingsForManager } from '../../features/bookings/services';
 
+/**
+ * ManagerBookings component displays a list of bookings for venues managed by a specific user.
+ *
+ * Features:
+ * - Fetches all bookings for venues managed by the given `userName` on mount.
+ * - Displays loading state while fetching data.
+ * - Shows an error message if fetching fails.
+ * - Displays a message if no bookings are found.
+ * - Filters bookings to show only upcoming bookings (where `dateTo` is in the future).
+ * - Renders each booking with:
+ *   - Venue image (or placeholder if not available)
+ *   - Venue name
+ *   - Booking dates (from → to)
+ *   - Number of guests
+ *
+ * Props:
+ * - `userName` (string): The username whose managed venue bookings should be fetched.
+ *
+ * @param {Object} props - Component props.
+ * @param {string} props.userName - The username to fetch bookings for.
+ *
+ * @example
+ * <ManagerBookings userName="john_doe" />
+ */
+
 type ManagerBookingsProps = {
   userName: string;
 };

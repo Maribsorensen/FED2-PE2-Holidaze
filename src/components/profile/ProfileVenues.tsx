@@ -14,6 +14,29 @@ import { SkeletonCardGrid } from '../common/LoadingSkeleton';
 import toast from 'react-hot-toast';
 import { FaEllipsisV } from 'react-icons/fa';
 
+/**
+ * Venues component displays a list of venues created by a specific user.
+ *
+ * Features:
+ * - Fetches venues for the given `userName` on mount.
+ * - Shows loading state, error messages, or a message if no venues exist.
+ * - Renders each venue using the `VenueCard` component.
+ * - Provides options to edit or delete each venue via a dropdown menu:
+ *   - Edit opens a modal with `VenueForm` pre-filled with venue data.
+ *   - Delete opens a confirmation modal before removing the venue.
+ * - Allows creating new venues via the same `VenueForm` in a modal.
+ * - Uses toast notifications for success/error feedback.
+ *
+ * Props:
+ * - `userName` (string): The username whose venues should be fetched.
+ *
+ * @param {Object} props - Component props.
+ * @param {string} props.userName - The username to fetch venues for.
+ *
+ * @example
+ * <Venues userName="john_doe" />
+ */
+
 type VenuesProps = {
   userName: string;
 };

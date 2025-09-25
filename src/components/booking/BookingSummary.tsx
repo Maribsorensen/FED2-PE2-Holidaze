@@ -1,5 +1,37 @@
 import { Button } from '../common/Button';
 
+/**
+ * BookingSummary component displays a summary of the booking details.
+ *
+ * Features:
+ * - Shows the selected date range and calculates the number of nights.
+ * - Displays current number of guests and allows modifying it (up to `maxGuests`).
+ * - Calculates and displays the total price for the stay.
+ * - Provides a button to confirm the booking.
+ *
+ * @param {Object} props - Component props.
+ * @param {Date[] | null} props.selectedRange - Array containing start and end dates of the booking.
+ * @param {number} props.guests - Current number of guests.
+ * @param {number} props.maxGuests - Maximum number of guests allowed.
+ * @param {number} props.pricePerNight - Price per night for the booking.
+ * @param {(g: number) => void} props.onChangeGuests - Callback when the number of guests changes.
+ * @param {(range: Date[]) => void} props.onChangeDates - Callback when the date range changes.
+ * @param {() => void} props.onBook - Callback to handle booking action.
+ *
+ * @example
+ * <BookingSummary
+ *   selectedRange={[new Date('2025-10-01'), new Date('2025-10-05')]}
+ *   guests={2}
+ *   maxGuests={5}
+ *   pricePerNight={120}
+ *   onChangeGuests={(g) => console.log(g)}
+ *   onChangeDates={(range) => console.log(range)}
+ *   onBook={() => console.log('Booked!')}
+ * />
+ *
+ * @returns {JSX.Element | null} The rendered booking summary component, or null if no dates are selected.
+ */
+
 interface BookingSummaryProps {
   selectedRange: Date[] | null;
   guests: number;
