@@ -52,9 +52,15 @@
   cursor: pointer;
 }
 
-/* Hover effect for selectable days */
-.custom-calendar .react-calendar__tile:enabled:hover {
-  background-color: #a0d6cf;
+/* Hover effect for selectable days (desktop only) */
+@media (hover: hover) and (pointer: fine) {
+  .custom-calendar .react-calendar__tile:enabled:hover {
+    background-color: #a0d6cf;
+  }
+
+  .custom-calendar .react-calendar__navigation button:hover:not(:disabled) {
+    background-color: #a0d6cf;
+  }
 }
 
 /* Disabled days */
