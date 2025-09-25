@@ -48,3 +48,7 @@ export type TPaginatedVenues = {
   data: TVenue[];
   meta: TPaginationMeta;
 };
+
+export type VenueWithBookings = TVenue & {
+  bookings: TBookings[];
+};

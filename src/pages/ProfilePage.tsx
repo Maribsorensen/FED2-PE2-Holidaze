@@ -12,6 +12,7 @@ import { safeAsync } from '../lib/safeAsync';
 import { SkeletonProfile } from '../components/common/LoadingSkeleton';
 import toast from 'react-hot-toast';
 import { usePageMeta } from '../hooks/usePageMeta';
+import { ManagerBookings } from '../components/profile/ProfileManagerBookings';
 
 export function ProfilePage() {
   const [user, setUser] = useState<TUser | null>(null);
@@ -23,7 +24,9 @@ export function ProfilePage() {
   const [avatarAlt, setAvatarAlt] = useState('');
 
   const [isVenueModalOpen, setIsVenueModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'bookings' | 'venues'>('bookings');
+  const [activeTab, setActiveTab] = useState<
+    'bookings' | 'venues' | 'managerBookings'
+  >('bookings');
   usePageMeta();
   useEffect(() => {
     async function fetchProfile() {
@@ -133,6 +136,18 @@ export function ProfilePage() {
             My Venues
           </button>
         )}
+        {user.venueManager && (
+          <button
+            className={`px-4 py-2 -mb-px border-b-2 transition-colors ${
+              activeTab === 'managerBookings'
+                ? 'border-primary text-primary font-semibold'
+                : 'border-transparent text-gray-500 hover:text-primary'
+            }`}
+            onClick={() => setActiveTab('managerBookings')}
+          >
+            Bookings for My Venues
+          </button>
+        )}
       </div>
 
       {/* Content */}
@@ -146,6 +161,9 @@ export function ProfilePage() {
           </div>
           <Venues userName={user.name} />
         </div>
+      )}
+      {activeTab === 'managerBookings' && user.venueManager && (
+        <ManagerBookings userName={user.name} />
       )}
       {/* Avatar Modal */}
       <Modal

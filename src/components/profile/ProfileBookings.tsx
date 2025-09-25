@@ -116,7 +116,7 @@ export function Bookings({ userName }: { userName: string }) {
     <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {list.map((b) => (
         <BookingCard
-          key={b.venueId}
+          key={b.id}
           booking={b}
           onUpdateBooking={() => handleEdit(b)}
           onDeleteBooking={() => {

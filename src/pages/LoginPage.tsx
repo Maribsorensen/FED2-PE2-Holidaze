@@ -52,7 +52,7 @@ export function LoginPage() {
             type="email"
             name="email"
             required
-            pattern="^[a-zA-Z0-9._%+-]+@stud\.noroff\.no$"
+            pattern="^[a-zA-Z0-9._%+-]+@stud.noroff.no$"
             title="Email must be a valid stud.noroff.no address."
             className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary"
           />

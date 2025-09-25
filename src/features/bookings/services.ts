@@ -1,5 +1,6 @@
 import { fetchApi } from '../../lib/api';
 import type { TBookings } from '../../types/bookings';
+import type { VenueWithBookings } from '../../types/venue';
 
 export async function getBookingsForUser(name: string): Promise<TBookings[]> {
   const data = await fetchApi<{ data: TBookings[] }>(
@@ -55,4 +56,23 @@ export async function updateBooking(
     }
   );
   return response;
+}
+
+export async function getBookingsForManager(
+  name: string
+): Promise<TBookings[]> {
+  const data = await fetchApi<{ data: VenueWithBookings[] }>(
+    `/holidaze/profiles/${name}/venues?_bookings=true&_owner=true`
+  );
+
+  const venues = data.data;
+
+  const bookings: TBookings[] = venues.flatMap((venue) =>
+    venue.bookings.map((b) => ({
+      ...b,
+      venue, // keep venue info so UI can display it
+    }))
+  );
+
+  return bookings;
 }
