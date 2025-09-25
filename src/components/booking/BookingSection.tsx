@@ -118,6 +118,7 @@ export function BookingSection({ venue }: BookingSectionProps) {
             setSelectedRange(range);
             setError(null);
           }}
+          value={selectedRange}
         />
 
         {/* Booking Summary */}

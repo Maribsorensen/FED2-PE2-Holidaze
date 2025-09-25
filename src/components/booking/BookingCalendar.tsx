@@ -25,11 +25,13 @@ import './calendar-custom.css';
 interface BookingCalendarProps {
   disabledDates?: Date[];
   onChange: (range: Date[] | null) => void;
+  value?: Date[] | null;
 }
 
 export function BookingCalendar({
   disabledDates = [],
   onChange,
+  value,
 }: BookingCalendarProps) {
   const isDateDisabled = (date: Date) =>
     disabledDates.some(
@@ -43,15 +45,25 @@ export function BookingCalendar({
     <div className="p-6 rounded-2xl max-w-3xl mx-auto border shadow-md bg-white space-y-4">
       <Calendar
         selectRange
-        onChange={(value) => {
-          if (Array.isArray(value)) {
-            onChange(value as Date[]);
-          } else if (value) {
-            onChange([value as Date]);
+        onChange={(val) => {
+          // val is Range<ValuePiece> | Date
+          if (Array.isArray(val) && val.length === 2) {
+            const [start, end] = val;
+            // Only call onChange if both are valid Dates
+            if (start instanceof Date && end instanceof Date) {
+              onChange([start, end]);
+            } else {
+              onChange(null);
+            }
+          } else if (val instanceof Date) {
+            onChange([val]);
           } else {
             onChange(null);
           }
         }}
+        value={
+          value && value.length === 2 ? (value as [Date, Date]) : undefined
+        }
         tileDisabled={({ date }) => isDateDisabled(date)}
         minDate={new Date()}
         className="custom-calendar"

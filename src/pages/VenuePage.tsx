@@ -89,7 +89,7 @@ export function VenuePage() {
           <ul className="font-body text-gray-700 border border-gray-200 rounded overflow-hidden">
             {[
               ['Guests', venue.maxGuests],
-              ['Price per day', `${venue.price} $`],
+              ['Price per night', `${venue.price} $`],
               ['Pets', venue.meta.pets ? 'Yes' : 'No'],
               ['Wifi', venue.meta.wifi ? 'Yes' : 'No'],
               ['Breakfast', venue.meta.breakfast ? 'Yes' : 'No'],

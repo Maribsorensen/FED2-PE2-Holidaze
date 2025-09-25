@@ -60,7 +60,6 @@ export function BookingSummary({
 
   return (
     <div className="p-4 border rounded-md bg-gray-50 shadow-md space-y-4 mt-4">
-      {/* Date selection */}
       <div className="flex flex-col gap-2">
         <label className="font-semibold">Dates:</label>
         <div className="flex gap-2">
@@ -77,14 +76,13 @@ export function BookingSummary({
             onChange={(e) =>
               onChangeDates([fromDate, new Date(e.target.value)])
             }
-            className="border p-2 rounded-md flex-1"
+            className="border p-2 rounded-md flex-1 font-body"
           />
         </div>
       </div>
 
-      {/* Guests dropdown */}
       <div className="flex flex-col">
-        <label className="font-semibold">Guests:</label>
+        <label className="font-semibold font-body">Guests:</label>
         <select
           value={guests}
           onChange={(e) => onChangeGuests(Number(e.target.value))}
@@ -98,12 +96,10 @@ export function BookingSummary({
         </select>
       </div>
 
-      {/* Total */}
       <div>
-        <strong>Total:</strong> ${nights * pricePerNight}
+        <strong className="font-body">Total:</strong> ${nights * pricePerNight}
       </div>
 
-      {/* Book button */}
       <Button onClick={onBook} className="w-full">
         Book Now
       </Button>
