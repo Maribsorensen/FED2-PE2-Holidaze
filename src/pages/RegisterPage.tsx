@@ -21,6 +21,12 @@ export function RegisterPage() {
     const password = form.get('password') as string;
     const venueManager = form.get('venueManager') === 'on';
 
+    if (!email.toLowerCase().endsWith('@stud.noroff.no')) {
+      setError('Email must be a valid stud.noroff.no address.');
+      setLoading(false);
+      return;
+    }
+
     const user = await safeAsync(
       () => register(name, email, password, venueManager),
       () => setError('Registration failed. Please check your credentials.')
@@ -68,7 +74,6 @@ export function RegisterPage() {
             type="email"
             name="email"
             required
-            pattern="^[a-zA-Z0-9._%+-]+@stud.noroff.no$"
             title="Email must be a valid stud.noroff.no address."
             className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary"
           />

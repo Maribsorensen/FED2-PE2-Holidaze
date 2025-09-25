@@ -19,6 +19,12 @@ export function LoginPage() {
     const email = form.get('email') as string;
     const password = form.get('password') as string;
 
+    if (!email.toLowerCase().endsWith('@stud.noroff.no')) {
+      setError('Email must be a valid stud.noroff.no address.');
+      setLoading(false);
+      return;
+    }
+
     const result = await safeAsync(
       () => login(email, password),
       () => setError('Login failed. Please check your credentials.')
@@ -40,7 +46,6 @@ export function LoginPage() {
           Log into your Holidaze account
         </h2>
 
-        {/* Error message above the form */}
         {error && <p className="text-cta text-center mt-2">{error}</p>}
 
         <div className="flex flex-col gap-2 mb-4">
@@ -52,7 +57,6 @@ export function LoginPage() {
             type="email"
             name="email"
             required
-            pattern="^[a-zA-Z0-9._%+-]+@stud.noroff.no$"
             title="Email must be a valid stud.noroff.no address."
             className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary"
           />
