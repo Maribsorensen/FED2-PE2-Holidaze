@@ -85,17 +85,23 @@ The goal of this project is to demonstrate general development capabilities, tec
    ```
 2. Install dependencies
 
-````bash
+```bash
 npm install
+```
+
 3. Start the development server
+
 ```bash
 npm run dev
+```
 
 ## Design & Prototyping
+
 - Style Guide: Created in Figma including logo, fonts, color palette, and components
 - Prototypes: Desktop and mobile versions created in Figma
 
 ## Testing & Validation
+
 - Manual testing for all user stories
 - Validated with:
 - HTML Validator
@@ -103,6 +109,6 @@ npm run dev
 - WAVE (accessibility)
 
 ## Deployment
+
 This project is deployed on Netlify
 https://pe2-holidaze-maribs.netlify.app/
-````
