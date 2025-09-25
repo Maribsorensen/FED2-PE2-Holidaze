@@ -234,13 +234,13 @@ export function Venues({ userName }: VenuesProps) {
               setIsDeleteOpen(false);
               setSelectedVenue(null);
             }}
-            className="px-4 py-2 rounded-md border border-gray-300"
+            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded font-headings text-transform uppercase"
           >
             Cancel
           </button>
           <button
             onClick={handleDeleteConfirm}
-            className="px-4 py-2 rounded-md bg-red-500 text-white hover:bg-red-600"
+            className="px-4 py-2 bg-cta hover:bg-cta-hover text-white rounded font-headings text-transform uppercase"
           >
             Delete
           </button>

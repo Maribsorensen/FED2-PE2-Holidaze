@@ -70,7 +70,9 @@ export function ManagerBookings({ userName }: ManagerBookingsProps) {
             className="w-16 h-16 object-cover rounded-md"
           />
           <div>
-            <p className="font-semibold font-headings">{b.venue.name}</p>
+            <p className="font-semibold font-headings text-transform uppercase">
+              {b.venue.name}
+            </p>
             <p className="text-sm text-gray-600 font-body">
               {new Date(b.dateFrom).toLocaleDateString()} →{' '}
               {new Date(b.dateTo).toLocaleDateString()}

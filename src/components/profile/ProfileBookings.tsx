@@ -171,7 +171,9 @@ export function Bookings({ userName }: { userName: string }) {
           setEditingBooking(null);
         }}
       >
-        <h2 className="text-lg font-semibold mb-4">Edit Booking</h2>
+        <h2 className="text-lg font-semibold font-headings text-transform uppercase mb-4">
+          Edit Booking
+        </h2>
         {editingBooking && (
           <div className="space-y-4">
             <label>
@@ -180,7 +182,7 @@ export function Bookings({ userName }: { userName: string }) {
                 type="number"
                 min={1}
                 value={editingBooking.guests}
-                className="border rounded px-2 py-1 w-full"
+                className="border rounded px-2 py-1 w-full font-body"
                 onChange={(e) =>
                   setEditingBooking((prev) =>
                     prev ? { ...prev, guests: Number(e.target.value) } : prev
@@ -193,7 +195,7 @@ export function Bookings({ userName }: { userName: string }) {
               <input
                 type="date"
                 value={editingBooking.dateFrom.split('T')[0]}
-                className="border rounded px-2 py-1 w-full"
+                className="border rounded px-2 py-1 w-full font-body"
                 onChange={(e) =>
                   setEditingBooking((prev) =>
                     prev ? { ...prev, dateFrom: e.target.value } : prev
@@ -206,7 +208,7 @@ export function Bookings({ userName }: { userName: string }) {
               <input
                 type="date"
                 value={editingBooking.dateTo.split('T')[0]}
-                className="border rounded px-2 py-1 w-full"
+                className="border rounded px-2 py-1 w-full font-body"
                 onChange={(e) =>
                   setEditingBooking((prev) =>
                     prev ? { ...prev, dateTo: e.target.value } : prev
@@ -215,9 +217,9 @@ export function Bookings({ userName }: { userName: string }) {
               />
             </label>
 
-            <div className="flex justify-end gap-2">
+            <div className="flex justify-end gap-2 mt-2">
               <button
-                className="px-4 py-2 bg-gray-200 rounded"
+                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded font-headings text-transform uppercase"
                 onClick={() => {
                   setIsEditOpen(false);
                   setEditingBooking(null);
@@ -226,7 +228,7 @@ export function Bookings({ userName }: { userName: string }) {
                 Cancel
               </button>
               <button
-                className="px-4 py-2 bg-cta text-white rounded"
+                className="px-4 py-2 bg-cta hover:bg-cta-hover text-white rounded font-headings text-transform uppercase"
                 onClick={() =>
                   editingBooking &&
                   handleSaveEdit({
@@ -251,11 +253,15 @@ export function Bookings({ userName }: { userName: string }) {
           setSelectedBooking(null);
         }}
       >
-        <h2 className="text-lg font-semibold mb-4">Delete Booking</h2>
-        <p className="mb-6">
+        <h2 className="text-lg font-semibold mb-4 font-headings text-transform uppercase">
+          Delete Booking
+        </h2>
+        <p className="mb-6 font-body">
           Are you sure you want to delete your booking at{' '}
-          <span className="font-bold">{selectedBooking?.venue.name}</span>? This
-          action cannot be undone.
+          <span className="font-bold font-body">
+            {selectedBooking?.venue.name}
+          </span>
+          ? This action cannot be undone.
         </p>
         <div className="flex justify-end gap-3">
           <button
@@ -263,13 +269,13 @@ export function Bookings({ userName }: { userName: string }) {
               setIsDeleteOpen(false);
               setSelectedBooking(null);
             }}
-            className="px-4 py-2 rounded-md border border-gray-300"
+            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded font-headings text-transform uppercase"
           >
             Cancel
           </button>
           <button
             onClick={handleDeleteConfirm}
-            className="px-4 py-2 rounded-md bg-red-500 text-white hover:bg-red-600"
+            className="px-4 py-2 bg-cta hover:bg-cta-hover text-white rounded font-headings text-transform uppercase"
           >
             Delete
           </button>
