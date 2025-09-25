@@ -32,6 +32,13 @@ import { Button } from '../common/Button';
  * @returns {JSX.Element | null} The rendered booking summary component, or null if no dates are selected.
  */
 
+function formatDateLocal(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
 interface BookingSummaryProps {
   selectedRange: Date[] | null;
   guests: number;
@@ -59,20 +66,23 @@ export function BookingSummary({
   );
 
   return (
-    <div className="p-4 border rounded-md bg-gray-50 shadow-md space-y-4 mt-4">
+    <div className="p-4 border rounded-md bg-gray-50 shadow-md space-y-4">
+      <h2 className="font-headings text-lg text-transform uppercase">
+        Booking Summary
+      </h2>
       <div className="flex flex-col gap-2">
         <label className="font-semibold">Dates:</label>
         <div className="flex gap-2">
           <input
             type="date"
-            value={fromDate.toISOString().split('T')[0]}
+            value={formatDateLocal(fromDate)}
             onChange={(e) => onChangeDates([new Date(e.target.value), toDate])}
             className="border p-2 rounded-md flex-1"
           />
           <span className="self-center">→</span>
           <input
             type="date"
-            value={toDate.toISOString().split('T')[0]}
+            value={formatDateLocal(toDate)}
             onChange={(e) =>
               onChangeDates([fromDate, new Date(e.target.value)])
             }

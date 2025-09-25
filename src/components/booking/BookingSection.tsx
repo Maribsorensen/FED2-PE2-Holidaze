@@ -28,6 +28,13 @@ import { Button } from '../common/Button';
  * @returns {JSX.Element} The rendered booking section component.
  */
 
+function formatDateLocal(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
 interface BookingSectionProps {
   venue: TVenue;
 }
@@ -68,8 +75,8 @@ export function BookingSection({ venue }: BookingSectionProps) {
     await safeAsync(
       () =>
         createBooking({
-          dateFrom: selectedRange[0].toISOString(),
-          dateTo: selectedRange[1].toISOString(),
+          dateFrom: formatDateLocal(selectedRange[0]),
+          dateTo: formatDateLocal(selectedRange[1]),
           guests,
           venueId: venue.id,
         }),
@@ -98,7 +105,6 @@ export function BookingSection({ venue }: BookingSectionProps) {
       .finally(() => setLoading(false));
   };
 
-  // New handler for "Book Now"
   const handleBookNow = () => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -129,7 +135,7 @@ export function BookingSection({ venue }: BookingSectionProps) {
           pricePerNight={venue.price}
           onChangeGuests={(g) => setGuests(g)}
           onChangeDates={(range) => setSelectedRange(range)}
-          onBook={handleBookNow} // Use the new handler
+          onBook={handleBookNow}
         />
 
         {/* Confirmation Modal */}

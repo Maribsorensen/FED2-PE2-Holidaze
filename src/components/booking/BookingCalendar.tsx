@@ -42,14 +42,12 @@ export function BookingCalendar({
     );
 
   return (
-    <div className="p-6 rounded-2xl max-w-3xl mx-auto border shadow-md bg-white space-y-4">
+    <div className="p-6 rounded-md max-w-3xl mx-auto border shadow-md bg-white space-y-4">
       <Calendar
         selectRange
         onChange={(val) => {
-          // val is Range<ValuePiece> | Date
           if (Array.isArray(val) && val.length === 2) {
             const [start, end] = val;
-            // Only call onChange if both are valid Dates
             if (start instanceof Date && end instanceof Date) {
               onChange([start, end]);
             } else {
