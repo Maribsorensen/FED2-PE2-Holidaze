@@ -28,6 +28,14 @@ import { Button } from '../common/Button';
  * @returns {JSX.Element} The rendered booking section component.
  */
 
+function getNights(from: Date, to: Date): number {
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const utcFrom = Date.UTC(from.getFullYear(), from.getMonth(), from.getDate());
+  const utcTo = Date.UTC(to.getFullYear(), to.getMonth(), to.getDate());
+  const diffDays = (utcTo - utcFrom) / msPerDay;
+  return Math.max(0, Math.floor(diffDays));
+}
+
 function formatDateLocal(date: Date): string {
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, '0');
@@ -53,7 +61,8 @@ export function BookingSection({ venue }: BookingSectionProps) {
       const start = new Date(booking.dateFrom);
       const end = new Date(booking.dateTo);
       const dates: Date[] = [];
-      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+      // Exclude checkout day (treat `end` as checkout)
+      for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
         dates.push(new Date(d));
       }
       return dates;
@@ -66,6 +75,15 @@ export function BookingSection({ venue }: BookingSectionProps) {
       setError('Please select a valid date range.');
       return;
     }
+
+    const nights = getNights(selectedRange[0], selectedRange[1]);
+    if (nights <= 0) {
+      setError(
+        'Please select a valid date range (checkout must be after arrival).'
+      );
+      return;
+    }
+
     if (guests < 1 || guests > venue.maxGuests) {
       setError(`Number of guests must be between 1 and ${venue.maxGuests}.`);
       return;
@@ -154,10 +172,7 @@ export function BookingSection({ venue }: BookingSectionProps) {
               </p>
               <p>
                 <strong>Total:</strong> $
-                {Math.ceil(
-                  (selectedRange[1].getTime() - selectedRange[0].getTime()) /
-                    (1000 * 60 * 60 * 24)
-                ) * venue.price}
+                {getNights(selectedRange[0], selectedRange[1]) * venue.price}
               </p>
               {error && <p className="text-red-500 font-semibold">{error}</p>}
 

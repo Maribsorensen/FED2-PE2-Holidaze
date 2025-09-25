@@ -32,6 +32,14 @@ import { Button } from '../common/Button';
  * @returns {JSX.Element | null} The rendered booking summary component, or null if no dates are selected.
  */
 
+function getNights(from: Date, to: Date): number {
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const utcFrom = Date.UTC(from.getFullYear(), from.getMonth(), from.getDate());
+  const utcTo = Date.UTC(to.getFullYear(), to.getMonth(), to.getDate());
+  const diffDays = (utcTo - utcFrom) / msPerDay;
+  return Math.max(0, Math.floor(diffDays));
+}
+
 function formatDateLocal(date: Date): string {
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, '0');
@@ -61,9 +69,7 @@ export function BookingSummary({
   if (!selectedRange || selectedRange.length !== 2) return null;
 
   const [fromDate, toDate] = selectedRange;
-  const nights = Math.ceil(
-    (toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24)
-  );
+  const nights = getNights(fromDate, toDate);
 
   return (
     <div className="p-4 border rounded-md bg-gray-50 shadow-md space-y-4">
@@ -77,7 +83,7 @@ export function BookingSummary({
             type="date"
             value={formatDateLocal(fromDate)}
             onChange={(e) => onChangeDates([new Date(e.target.value), toDate])}
-            className="border p-2 rounded-md flex-1"
+            className="border p-2 rounded-md flex-1 font-body"
           />
           <span className="self-center">→</span>
           <input
