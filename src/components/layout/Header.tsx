@@ -64,7 +64,7 @@ export function Header() {
     <header className="bg-primary text-white font-headings uppercase relative">
       <nav className="container mx-auto flex justify-between items-center p-4">
         <NavLink to="/" className="text-2xl">
-          Holidaze
+          Holidaze!
         </NavLink>
 
         <ul className="flex gap-2 md:gap-6">
